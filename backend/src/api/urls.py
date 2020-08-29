@@ -4,5 +4,6 @@ from django.urls import include, path
 from . import logic
 
 urlpatterns = [
-    path('example', logic.example)
+    path('example', logic.example),
+    path('users', logic.getUser)
 ]
