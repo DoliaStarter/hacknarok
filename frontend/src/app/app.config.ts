@@ -5,6 +5,8 @@ export const registerUrl = `${host}/api/users/register`;
 export const mapApiToken = 'pk.eyJ1IjoiZHVzaGVzcyIsImEiOiJja2VmcWpneHcwc201MnluNzl3ZDRjNDl1In0.sV8IejZBXjXoUbHgRGeN6w'
 export const questListServiceUrl = `${host}/api/quests`;
 
+// router 
+export const questDetailsRoute = 'quest-details';
 
 // models
 // list
@@ -28,10 +30,10 @@ export interface QuestModel {
 
 
 export interface QuestPointModel extends BasePointModel {
-    status: PointStatus;
-    description: string;
-    title: string;
-    canOpenPoints: QuestPointModel[];
+    status?: PointStatus;
+    description?: string;
+    title?: string;
+    canOpenPoints?: QuestPointModel[];
 }
 
 export enum PointStatus {
