@@ -2,7 +2,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from src.models import *
-import Math
+import math
 import json
 
 EARTH_RADIUS = 6371
@@ -25,10 +25,10 @@ def answer(request, id):
         for point in QuestPoint.objects.all():
             
             base_coord = (point.longitude, point.latitude)
-            d_lambda = Math.abs(user_coord[0]-base_coord[0])
-            d_fi = Math.abs(user_coord[1]-base_coord[1])
+            d_lambda = math.abs(user_coord[0]-base_coord[0])
+            d_fi = math.abs(user_coord[1]-base_coord[1])
 
-            if(EARTH_RADIUS*Math.sqrt(Math.sin(d_fi)**2 + Math.sin(d_fi)**2) < DISTANCE_CONST):
+            if(EARTH_RADIUS*math.sqrt(math.sin(d_fi)**2 + math.sin(d_fi)**2) < DISTANCE_CONST):
                 return JsonResponse({"isSuccess" : True})
 
         return JsonResponse({"isSuccess" : True})
