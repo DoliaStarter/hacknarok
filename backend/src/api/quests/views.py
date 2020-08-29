@@ -1,6 +1,8 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from src.models import *
+import json
 
 
 def index(request):
@@ -44,17 +46,43 @@ def get_quest_point_model(request):
     qp_status = quest_point_to_return.status
     qp_description = quest_point_to_return.description
     qp_title = quest_point_to_return.title
-    bp_lang = quest_point_to_return.latitude
+    bp_lati = quest_point_to_return.latitude
     bp_long = quest_point_to_return.longitude
     return JsonResponse({
         'status': qp_status,
         'description': qp_description,
         'title': qp_title,
         'pointId': qp_id,
-        'lang': bp_lang,
+        'lati': bp_lati,
         'long': bp_long,
 
     })
+
+
+def _getQuestFromPOST(request):
+    json_data = json.loads(request.body)
+    id = json_data["id"]
+    title = json_data["title"]
+    creator = json_data["creator"]
+    creator_id = json_data["creator_id"]
+    description = json_data["description"]
+    points = json_data["points"]
+    return id, title, creator, creator_id, description, points
+
+
+@csrf_exempt
+def create_quest(request):
+    if request.method == 'POST':
+        id, title, creator_name, creator_id, description, points = _getQuestFromPOST(request)
+        creator = User.objects.filter(id=creator_id)
+        new_quest = Quest(title=title, creator=creator, description=description)
+        new_quest.save()
+        for point in points:
+            new_point = QuestPoint(status=point.status, title=point.title, description=point.description,
+                                   latitude=point.lati, longitude=point.long, quest=point.quest,
+                                   parentPoint=point.parentPoint)
+            new_point.save()
+        return HttpResponse('Successfully created')
 
 # def get_base_point_model(request):
 #     bp_id = request.GET['id']
