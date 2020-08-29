@@ -23,6 +23,19 @@ def quest_search(request):
         'itemCount': item_count})
 
 
+def _get_user_and_quest_POST(request):
+    json_data = json.loads(request.body)
+    user = json_data["user"]
+    started_quest = json_data["quest"]
+    return user, started_quest
+
+
+def start_session(request):
+    user, started_quest = _get_user_and_quest_POST()
+    new_session = Sessions(user=user, quest=started_quest)
+    new_session.save()
+
+
 def get_quest_model(request):
     q_id = request.GET['id']
     quest_to_return = Quest.objects.filter(id=q_id)
