@@ -12,8 +12,9 @@ import { HeaderComponent } from './components/header/header.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MapComponent } from './components/map/map.component';
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HeaderComponent],
+  declarations: [AppComponent, LoginComponent, HeaderComponent, MapComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
