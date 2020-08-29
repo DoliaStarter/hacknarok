@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-from backend.src.models import *
+from src.models import *
 
 
 def index(request):
