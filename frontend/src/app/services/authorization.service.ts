@@ -1,6 +1,6 @@
 import { Injectable, Host } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { loginUrl, UserModel } from '../app.config';
+import { loginUrl, registerUrl, UserModel } from '../app.config';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class AuthorizationService {
   }
 
   public isAuthorized() {
-
+    return this.authorized;
   }
   public Login(login: string, password: string) {
 
@@ -27,7 +27,9 @@ export class AuthorizationService {
 
   }
   public Register(login: string, password: string) {
-
+    this.httpClient.post<UserModel>(registerUrl, { login: login, password: password }).toPromise().then((response) => {
+      this.authorized = true;
+    });
   }
 
 

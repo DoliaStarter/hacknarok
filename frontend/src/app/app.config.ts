@@ -1,7 +1,7 @@
 const host = 'http://localhost:8000';
 export const exampleServiceUrl = `${host}/api/example`;
-export const loginUrl = `${host}/api/login`;
-
+export const loginUrl = `${host}/api//users/login`;
+export const registerUrl = `${host}/api/users/register`;
 
 // models
 // list
