@@ -10,7 +10,15 @@
         </mat-form-field>
 
         <mat-divider></mat-divider>
+
+        <p *ngIf="isLogin">Don't have an account? <button class="highlight" (click)="isLogin=false">Register
+                now</button>
+        <p *ngIf="!isLogin">Already have an account? <button class="highlight" (click)="isLogin=true">Login now</button>
+
     </div>
     <button (click)="onNoClick()" mat-raised-button onclick="">Cancel</button>
-    <button type="submit" (click)="OnLoginClicked()" mat-raised-button color="primary">{{type}}</button>
+    <button type="submit" (click)="OnLoginClicked()" mat-raised-button color="primary">
+        <span *ngIf="isLogin">Login</span>
+        <span *ngIf="!isLogin">Register</span>
+    </button>
 </div>

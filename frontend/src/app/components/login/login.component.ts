@@ -17,9 +17,7 @@ export class LoginComponent implements OnInit {
 
   }
 
-
-
-  @Input() type: string = "Login"; //register or login
+  isLogin: boolean = true;
   login: string;
   password: string;
   ngOnInit(): void {
@@ -27,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   OnLoginClicked() {
 
-    if (this.type.toLowerCase() == "login")
+    if (this.isLogin)
       this.authService.Login(this.login, this.password);
     else
       this.authService.Register(this.login, this.password);
