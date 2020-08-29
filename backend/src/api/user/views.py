@@ -31,8 +31,7 @@ def register(request):
     if request.method == 'POST':
         login, password = _getLoginPasswordFromPOST(request)
         if (login not in [user.login for user in User.objects.all()]):
-            newUser = User(login=login,password=password)
-            newUser.save()
+            User(login=login,password=password).save()
             return HttpResponse('True')
         return HttpResponse('False')
 
