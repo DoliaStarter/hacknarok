@@ -23,7 +23,7 @@ def get_quest_model(request):
     q_title = quest_to_return.title
     q_creator_id = quest_to_return.creator.id
     q_creator = quest_to_return.creator.login
-    q_games_count = Quest.join(Sessions.quest).user.count()
+    q_games_count = 10  # Quest.join(Sessions.quest).user.count()
     q_description = quest_to_return.description
     q_points = list(QuestPoint.objects.filter(quest=quest_to_return))
     return JsonResponse({
@@ -44,22 +44,23 @@ def get_quest_point_model(request):
     qp_status = quest_point_to_return.status
     qp_description = quest_point_to_return.description
     qp_title = quest_point_to_return.title
+    bp_lang = quest_point_to_return.latitude
+    bp_long = quest_point_to_return.longitude
     return JsonResponse({
         'status': qp_status,
         'description': qp_description,
         'title': qp_title,
-
-    })
-
-
-def get_base_point_model(request):
-    bp_id = request.GET['id']
-    base_point_to_return = QuestPoint.objects.filter(id=bp_id)
-    bp_lang = base_point_to_return.latitude
-    bp_long = base_point_to_return.longitude
-    return JsonResponse({
-        'pointId': bp_id,
+        'pointId': qp_id,
         'lang': bp_lang,
         'long': bp_long,
 
     })
+
+# def get_base_point_model(request):
+#     bp_id = request.GET['id']
+#     base_point_to_return = QuestPoint.objects.filter(id=bp_id)
+#
+#     return JsonResponse({
+#
+#
+#     })
