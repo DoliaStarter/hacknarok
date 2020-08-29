@@ -23,7 +23,7 @@ def get_quest_model(request):
     q_title = quest_to_return.title
     q_creator_id = quest_to_return.creator.id
     q_creator = quest_to_return.creator.login
-    q_games_count = 0  # TODO
+    q_games_count = Quest.join(Sessions.quest).user.count()
     q_description = quest_to_return.description
     q_points = list(QuestPoint.objects.filter(quest=quest_to_return))
     return JsonResponse({
