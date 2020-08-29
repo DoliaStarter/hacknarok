@@ -1,0 +1,9 @@
+.description {
+    display: flex;
+    flex-direction: row;
+    
+    * {
+        order: 1;
+        width: 50%;
+    }
+}
