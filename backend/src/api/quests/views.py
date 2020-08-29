@@ -10,13 +10,9 @@ def index(request):
     return render(request, '', context)
 
 
-def get_quest_list_model(request):
-    quest_list_model = list(Quest.objects.order_by('title'))
-    item_count = Quest.objects.count()
-    return JsonResponse({
-        'quests': quest_list_model,
-        'itemCount': item_count
-    })
+# def get_quest_list_model(request):
+#
+#     })
 
 
 def get_quest_model(request):
@@ -71,7 +67,7 @@ def _getQuestFromPOST(request):
 
 
 @csrf_exempt
-def create_quest(request):
+def quest(request):
     if request.method == 'POST':
         id, title, creator_name, creator_id, description, points = _getQuestFromPOST(request)
         creator = User.objects.filter(id=creator_id)
@@ -83,6 +79,12 @@ def create_quest(request):
                                    parentPoint=point.parentPoint)
             new_point.save()
         return HttpResponse('Successfully created')
+    else:
+        quest_list_model = list(Quest.objects.order_by('title'))
+        item_count = Quest.objects.count()
+        return JsonResponse({
+            'quests': quest_list_model,
+            'itemCount': item_count})
 
 # def get_base_point_model(request):
 #     bp_id = request.GET['id']
