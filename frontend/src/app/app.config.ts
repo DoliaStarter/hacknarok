@@ -49,7 +49,7 @@ export enum PointStatus {
 // SUCCESS -> new QuestModel
 // Failure -> Failure
 export interface BasePointModel {
-    pointId: number;
+    pointId?: number;
     long: number;
     lati: number;
 }

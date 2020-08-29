@@ -2,6 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { BasePointModel, mapApiToken } from "../../app.config";
 
+interface QuestMarkerModelOptions extends mapboxgl.MarkerOptions {
+  pointId?: number;
+}
+
+class QuestMarkerModel extends mapboxgl.Marker {
+
+  constructor(options: QuestMarkerModelOptions) {
+    super(options);
+    this.pointId = options.pointId;
+  }
+  public pointId?: number;
+} 
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -13,7 +26,7 @@ export class MapComponent implements OnInit {
   style = 'mapbox://styles/mapbox/streets-v11';
 
 
-  public markers: Array<mapboxgl.Marker> = [];
+  public markers: Array<QuestMarkerModel> = [];
 
 
   constructor() { }
@@ -41,8 +54,12 @@ export class MapComponent implements OnInit {
   }
   public CenterMap() {
     navigator.geolocation.getCurrentPosition(position => {
-
-      this.map.setCenter([position.coords.longitude, position.coords.latitude]);
+      const currentPoint: BasePointModel = {
+        lati: position.coords.latitude,
+        long: position.coords.longitude
+      };
+      const closestPoint = this.findClosestPoint(currentPoint, this.GetPoints()) || currentPoint;      
+      this.map.setCenter([closestPoint.long, closestPoint.lati]);
     });
   }
 
@@ -54,7 +71,7 @@ export class MapComponent implements OnInit {
 
   public AddRangeMarkers(points: Array<BasePointModel>, isDragable: boolean, onClick?: (point) => void) {
     points.forEach(point => {
-      this.AddMarkerInPosition([point.long, point.lati], isDragable, onClick);
+      this.AddMarkerInPosition(point, isDragable, onClick);
     });
   }
   
@@ -74,14 +91,16 @@ export class MapComponent implements OnInit {
   }
 
 
-  public AddMarkerAtCenter(isDraggable, onClick?: EventListener): void {  // onDragEnd <- function which will be executed after drags end
-
-    this.AddMarkerInPosition(this.map.getCenter(), isDraggable, onClick);
+  public AddMarkerAtCenter(isDraggable, onClick?: (point: BasePointModel) => void): void { 
+     // onDragEnd <- function which will be executed after drags end
+    this.AddMarkerInPosition({long: this.map.getCenter().lng, lati: this.map.getCenter().lat}, isDraggable, onClick);
   }
-  public AddMarkerInPosition(position: mapboxgl.LngLatLike, isDraggable: boolean, onClick?: (point) => void) {
-    var marker = new mapboxgl.Marker({
+  public AddMarkerInPosition( point: BasePointModel, isDraggable: boolean, onClick?: (point: BasePointModel) => void) {
+    var position: mapboxgl.LngLatLike = [point.long, point.lati];
+    
+    var marker = new QuestMarkerModel({
       draggable: isDraggable,
-
+      pointId: point.pointId
     })
       .setLngLat(position)
       .addTo(this.map);
@@ -93,17 +112,22 @@ export class MapComponent implements OnInit {
       }
       }
       );
-
-  
     this.markers.push(marker);
   }
 
-  private toBasePoint(marker: mapboxgl.Marker): BasePointModel {
+  private toBasePoint(marker: QuestMarkerModel): BasePointModel {
           return {
-          pointId: 1,
+          pointId: marker.pointId,
           lati: marker.getLngLat().lat,
           long: marker.getLngLat().lng
         }
+  }
+  private findClosestPoint(source: BasePointModel, points: BasePointModel[]) {
+    return [...points].sort((a, b) => this.euclidianDistance(source, a) - this.euclidianDistance(source, b))[0];
+  }
+
+  private euclidianDistance(point1: BasePointModel, point2: BasePointModel) {
+    return Math.sqrt((point1.lati - point2.lati) * (point1.lati - point2.lati) + (point1.long - point2.long) * (point1.long - point2.long))
   }
 }
 
