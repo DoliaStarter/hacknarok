@@ -14,10 +14,18 @@ def index(request):
 #
 #     })
 
+def quest_search(request):
+    substring = request.GET['substring']
+    quests = Quest.objects.filter(title__contains=substring).all()
+    item_count = len(quests)
+    return JsonResponse({
+        'quests': quests,
+        'itemCount': item_count})
+
 
 def get_quest_model(request):
     q_id = request.GET['id']
-    quest_to_return = Quest.object5s.filter(id=q_id)
+    quest_to_return = Quest.objects.filter(id=q_id)
     q_title = quest_to_return.title
     q_creator_id = quest_to_return.creator.id
     q_creator = quest_to_return.creator.login
