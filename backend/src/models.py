@@ -32,3 +32,10 @@ class QuestPoint(models.Model):
                               on_delete=models.CASCADE)
     parentPoint = models.ForeignKey('self', \
                                     on_delete=models.CASCADE)
+
+class Sessions(models.Model):
+    user = models.ForeignKey(User, \
+                            on_delete=models.CASCADE)
+    quest = models.ForeignKey(Quest, \
+                            on_delete=models.CASCADE)
+    isEnded = models.BooleanField(default=False)
