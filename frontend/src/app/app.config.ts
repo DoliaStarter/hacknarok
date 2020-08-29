@@ -2,6 +2,7 @@ const host = 'http://localhost:8000';
 export const exampleServiceUrl = `${host}/api/example`;
 export const loginUrl = `${host}/api//users/login`;
 export const registerUrl = `${host}/api/users/register`;
+export const mapApiToken = 'pk.eyJ1IjoiZHVzaGVzcyIsImEiOiJja2VmcWpneHcwc201MnluNzl3ZDRjNDl1In0.sV8IejZBXjXoUbHgRGeN6w'
 export const questListServiceUrl = `${host}/api/quests`;
 
 
@@ -47,8 +48,8 @@ export enum PointStatus {
 // Failure -> Failure
 export interface BasePointModel {
     pointId: number;
-    lang: number;
     long: number;
+    lati: number;
 }
 
 
