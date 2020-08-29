@@ -10,9 +10,15 @@ import json
 def getAciveQuests(request, id):
     sessions = Sessions.objects\
         .filter(user=User.objects.get(id=id))
-    return JsonResponse({
-        'quests': [session.quest.title for session in sessions]
+    return JsonResponse({ 
+        'quests': [{
+            
+            'id':sessions.quest.id,
+            'title':sessions.quest.title
+            
+        } for ssession in sessions]
     })
+
 
 def _getLoginPasswordFromPOST(request):
     json_data = json.loads(request.body)
@@ -27,8 +33,8 @@ def register(request):
         if (login not in [user.login for user in User.objects.all()]):
             newUser = User(login=login,password=password)
             newUser.save()
-            return HttpResponse('Successfully registered')
-        return HttpResponse('Here is such user')
+            return HttpResponse('True')
+        return HttpResponse('False')
 
 @csrf_exempt
 def sign_in(request):
