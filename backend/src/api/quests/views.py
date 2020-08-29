@@ -2,8 +2,11 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from src.models import *
+import Math
 import json
 
+EARTH_RADIUS = 6371
+DISTANCE_CONST = 0.005
 
 def index(request):
     context = {}
@@ -13,6 +16,24 @@ def index(request):
 # def get_quest_list_model(request):
 #
 #     })
+
+@csrf_exempt
+def answer(request, id):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        user_coord = (json_data["long"], json_data["lat"])
+        for point in QuestPoint.objects.all():
+            
+            base_coord = (point.longitude, point.latitude)
+            d_lambda = Math.abs(user_coord[0]-base_coord[0])
+            d_fi = Math.abs(user_coord[1]-base_coord[1])
+
+            if(EARTH_RADIUS*Math.sqrt(Math.sin(d_fi)**2 + Math.sin(d_fi)**2) < DISTANCE_CONST):
+                return JsonResponse({"isSuccess" : True})
+
+        return JsonResponse({"isSuccess" : True})
+
+
 
 @csrf_exempt
 def getPoint(request, id):

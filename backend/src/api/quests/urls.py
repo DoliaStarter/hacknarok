@@ -7,6 +7,6 @@ urlpatterns = [
     path('search', views.quest_search, name='questSearch'),
     path('<int:id>/', views.get_quest_model, name='quest'),
     path('<int:id>/delete', views.deleteQuest, name='delete_quest'),
-    #path('<int:id>/answers', views.get_base_point_model, name='basePoint'),
+    path('<int:id>/answers', views.answer, name='answers'),
     path('<int:id>/start', views.start_session, name='start_session'),
 ]
