@@ -2,38 +2,37 @@ const host = 'http://localhost:8000';
 export const exampleServiceUrl = `${host}/api/example`;
 
 
-
 // models
 // list
 // endpoint GET api/quests
 interface QuestListModel {
-    quests: QuestModel[];
-    itemCount: number;
+  quests: QuestModel[];
+  itemCount: number;
 }
 
 // endpoint GET api/quests/{id}
 // endpoint POST api/quests
 interface QuestModel {
-    id?: number; // in list
-    title: string; // in list
-    creatorId: number; // in list
-    creator: string; // in list
-    gamesCount: string; // in list
-    description: string; 
-    points: QuestPointModel[];
+  id?: number; // in list
+  title: string; // in list
+  creatorId: number; // in list
+  creator: string; // in list
+  gamesCount: string; // in list
+  description: string;
+  points: QuestPointModel[];
 }
 
 
 interface QuestPointModel extends BasePointModel {
-    status: PointStatus;
-    description: string;
-    title: string;
+  status: PointStatus;
+  description: string;
+  title: string;
 }
 
 enum PointStatus {
-    HIDDEN = 'hidden',
-    VISIBLE = 'visible',
-    VISITED = 'visited',
+  HIDDEN = 'hidden',
+  VISIBLE = 'visible',
+  VISITED = 'visited',
 }
 
 
@@ -43,10 +42,10 @@ enum PointStatus {
 // SUCCESS -> new QuestModel
 // Failure -> Failure
 interface BasePointModel {
-    pointId: number;
-    lang: number;
-    long: number;
-    }
+  pointId: number;
+  lang: number;
+  long: number;
+}
 
 
 // endpoint POST api/quests/{id}/start
@@ -61,9 +60,10 @@ interface BasePointModel {
 // endpoint POST api/users/register
 // endpoint POST api/users/login
 interface UserModel {
-    login: string;
-    password: string;
+  login: string;
+  password: string;
 }
+
 // -> Succes V Failure
 
 
