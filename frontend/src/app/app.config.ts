@@ -3,35 +3,38 @@ export const exampleServiceUrl = `${host}/api/example`;
 export const loginUrl = `${host}/api//users/login`;
 export const registerUrl = `${host}/api/users/register`;
 export const mapApiToken = 'pk.eyJ1IjoiZHVzaGVzcyIsImEiOiJja2VmcWpneHcwc201MnluNzl3ZDRjNDl1In0.sV8IejZBXjXoUbHgRGeN6w'
+export const questListServiceUrl = `${host}/api/quests`;
+
+
 // models
 // list
 // endpoint GET api/quests
-interface QuestListModel {
+export interface QuestListModel {
     quests: QuestModel[];
     itemCount: number;
 }
 
 // endpoint GET api/quests/{id}
 // endpoint POST api/quests
-interface QuestModel {
+export interface QuestModel {
     id?: number; // in list
     title: string; // in list
-    creatorId: number; // in list
     creator: string; // in list
-    gamesCount: string; // in list
-    description: string;
-    points: QuestPointModel[];
+    gamesCount: number; // in list
+    creatorId?: number; // in list
+    description?: string; 
+    points?: QuestPointModel[];
 }
 
 
-interface QuestPointModel extends BasePointModel {
+export interface QuestPointModel extends BasePointModel {
     status: PointStatus;
     description: string;
     title: string;
     canOpenPoints: QuestPointModel[];
 }
 
-enum PointStatus {
+export enum PointStatus {
     HIDDEN = 'hidden',
     VISIBLE = 'visible',
     VISITED = 'visited',

@@ -1,11 +1,8 @@
-import { Injectable, Host } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { loginUrl, registerUrl, UserModel } from '../app.config';
-
-interface UserInfo {
-  login: string;
-  userId: number
-}
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +12,8 @@ export class AuthorizationService {
   constructor(public httpClient: HttpClient) { }
 
   private authorized: boolean;
-  private currentUser: UserInfo;
-  public GetCurrentUser(): UserInfo {
+  private currentUser: UserModel;
+  public GetCurrentUser(): UserModel {
 
     return this.currentUser;
   }
@@ -24,21 +21,29 @@ export class AuthorizationService {
   public isAuthorized() {
     return this.authorized;
   }
-  public Login(login: string, password: string) {
+  public Login(login: string, password: string): Observable<boolean> {
+    const user = {
+      login: login,
+      password: password 
+    };
 
-    this.httpClient.post<UserModel>(loginUrl, { login: login, password: password }).toPromise().then((response) => {
-      this.authorized = true;
-    });
-
-
+    return this.httpClient.post<boolean>(loginUrl,<UserModel> user).pipe(
+      tap(isSuccess => {
+        this.authorized = isSuccess
+        this.currentUser = user
+      })
+    )
   }
-  public Register(login: string, password: string) {
-    this.httpClient.post<UserModel>(registerUrl, { login: login, password: password }).toPromise().then((response) => {
-      this.authorized = true;
-    });
+  public Register(login: string, password: string): Observable<boolean> {
+    const user = {
+      login: login,
+      password: password 
+    };
+    return this.httpClient.post<boolean>(registerUrl, { login: login, password: password }).pipe(
+      tap(isSuccess => {
+        this.authorized = isSuccess
+        this.currentUser = user
+      })
+    )
   }
-
-
-
-
 }
