@@ -1,0 +1,11 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+.login-container
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.example-form-field {
+    width: 200px;
+  }
