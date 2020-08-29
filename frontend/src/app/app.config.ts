@@ -1,6 +1,6 @@
 const host = 'http://localhost:8000';
 export const exampleServiceUrl = `${host}/api/example`;
-
+export const loginUrl = `${host}/api/login`;
 
 
 // models
@@ -19,7 +19,7 @@ interface QuestModel {
     creatorId: number; // in list
     creator: string; // in list
     gamesCount: string; // in list
-    description: string; 
+    description: string;
     points: QuestPointModel[];
 }
 
@@ -47,7 +47,7 @@ interface BasePointModel {
     pointId: number;
     lang: number;
     long: number;
-    }
+}
 
 
 // endpoint POST api/quests/{id}/start
@@ -61,7 +61,7 @@ interface BasePointModel {
 
 // endpoint POST api/users/register
 // endpoint POST api/users/login
-interface UserModel {
+export interface UserModel {
     login: string;
     password: string;
 }

@@ -1,0 +1,13 @@
+<div class="login-container">
+    <mat-form-field class="example-form-field">
+        <mat-label>Login</mat-label>
+        <input matInput type="text" [(ngModel)]="login" placeholder="Your login">
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [(ngModel)]="password" placeholder="Your password">
+    </mat-form-field>
+</div>
+<mat-divider></mat-divider>
+<button (click)="OnCancelClicked()" mat-raised-button onclick="">Cancel</button>
+<button type="submit" (click)="OnLoginClicked()" mat-raised-button color="primary">{{type}}</button>
