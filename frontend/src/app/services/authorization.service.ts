@@ -18,11 +18,7 @@ export class AuthorizationService {
   private currentUser: UserInfo;
   public GetCurrentUser(): UserInfo {
 
-    return {
-      login: "John",
-      userId: 0
-    }
-
+    return currentUser;
   }
 
   public isAuthorized() {
