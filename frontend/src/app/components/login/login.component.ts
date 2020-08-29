@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { AuthorizationService } from '../../services/authorization.service';
@@ -18,10 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<LoginComponent>) {
 
   }
-
-
-
-  isLogin: string;
+  
+  isLogin: boolean;
   login: string;
   password: string;
   ngOnInit(): void {
