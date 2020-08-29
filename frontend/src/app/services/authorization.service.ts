@@ -10,8 +10,12 @@ export class AuthorizationService {
   constructor(public httpClient: HttpClient) { }
 
   private authorized: boolean;
-  private userId: number;
-  public GetCurrentUserId() {
+  private currentUser: number;
+  public GetCurrentUser() {
+
+    return {
+      login: "John"
+    }
 
   }
 
