@@ -1,14 +1,23 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthorizationService } from '../../services/authorization.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthorizationService) { }
+
+  constructor(
+    private authService: AuthorizationService,
+    public dialogRef: MatDialogRef<LoginComponent>) {
+
+  }
+
+
 
   @Input() type: string = "Login"; //register or login
   login: string;
@@ -22,9 +31,11 @@ export class LoginComponent implements OnInit {
       this.authService.Login(this.login, this.password);
     else
       this.authService.Register(this.login, this.password);
+    this.dialogRef.close()
   }
-  OnCancelClicked() {
 
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

@@ -8,7 +8,7 @@ import { ExampleService } from '../services/example.service';
 export class ExampleComponent {
   public exampleValue: string;
 
-  constructor(public exampleService: ExampleService) {}
+  constructor(public exampleService: ExampleService) { }
 
   onExampleButtonClick() {
     this.exampleService
