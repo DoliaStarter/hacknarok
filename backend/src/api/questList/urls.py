@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
+from . import views
 
 urlpatterns = [
-    path('questList/', include('src.api.questList.urls')), ]
+    path('', views.index, name='index')]

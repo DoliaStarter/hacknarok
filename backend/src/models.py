@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class User(models.Model):
     login = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
@@ -8,12 +9,11 @@ class User(models.Model):
 class Quest(models.Model):
     title = models.CharField(max_length=100)
     creator = models.ForeignKey(User, \
-        on_delete=models.CASCADE)
+                                on_delete=models.CASCADE)
     description = models.CharField(max_length=1000)
 
 
 class QuestPoint(models.Model):
-    
     class PointStatus(models.TextChoices):
         HIDDEN = 'hidden'
         VISIBLE = 'visible'
@@ -29,6 +29,6 @@ class QuestPoint(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
     quest = models.ForeignKey(Quest, \
-        on_delete=models.CASCADE)
-    parentPoint = models.ForeignKey( 'self', \
-        on_delete=models.CASCADE)
+                              on_delete=models.CASCADE)
+    parentPoint = models.ForeignKey('self', \
+                                    on_delete=models.CASCADE)
