@@ -1,10 +1,11 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth import authenticate, login
-from src.models import User, Sessions
-from django.views.decorators.csrf import csrf_exempt
 import json
+
+from django.contrib.auth import authenticate, login
+from django.http import (Http404, HttpResponse, HttpResponseRedirect,
+                         JsonResponse)
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from src.models import Sessions, User
 
 
 def getAciveQuests(request, id):
@@ -27,8 +28,8 @@ def register(request):
         if (login not in [user.login for user in User.objects.all()]):
             newUser = User(login=login,password=password)
             newUser.save()
-            return HttpResponse('Successfully registered')
-        return HttpResponse('Here is such user')
+            return JsonResponse({'isSuccess': True})
+        return JsonResponse({'isSuccess': False})
 
 @csrf_exempt
 def sign_in(request):
@@ -36,5 +37,5 @@ def sign_in(request):
         login, password = _getLoginPasswordFromPOST(request)
         if (login in [user.login for user in User.objects.all()] and \
             password in [user.password for user in User.objects.all()]):
-            return HttpResponse('True')
-        return HttpResponse('False')
+            return JsonResponse({'isSuccess': True})
+        return JsonResponse({'isSuccess': False})
