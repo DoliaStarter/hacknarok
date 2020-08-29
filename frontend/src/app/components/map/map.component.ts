@@ -15,6 +15,7 @@ export class MapComponent implements OnInit {
 
   public markers: Array<mapboxgl.Marker> = [];
 
+
   constructor() { }
   ngOnInit() {
     (mapboxgl as any).accessToken = mapApiToken;
@@ -51,12 +52,26 @@ export class MapComponent implements OnInit {
   }
 
 
-  public initMarkers(points: Array<BasePointModel>, isDragable: boolean) {
+  public AddRangeMarkers(points: Array<BasePointModel>, isDragable: boolean) {
     points.forEach(point => {
       this.AddMarkerInPosition([point.long, point.lati], isDragable);
     });
-
   }
+  public GetPoints(): Array<BasePointModel> {
+    let i = 0;
+    const result = new Array<BasePointModel>();
+    this.markers.forEach(marker => {
+      result.push(
+        {
+          pointId: i,
+          lati: marker.getLngLat().lat,
+          long: marker.getLngLat().lng
+
+        }
+      )
+    });
+  }
+
 
   public AddMarkerAtCenter(isDraggable, onClick?: EventListener): void {  // onDragEnd <- function which will be executed after drags end
 
@@ -70,12 +85,7 @@ export class MapComponent implements OnInit {
       .setLngLat(position)
       .addTo(this.map);
 
-    // function onDragEnd() {
-    //   var lngLat = marker.getLngLat();
-    //   coordinates.style.display = 'block';
-    //   coordinates.innerHTML =
-    //   'Longitude: ' + lngLat.lng + '<br />Latitude: ' + lngLat.lat;
-    //   }
+
     marker.getElement().addEventListener('click', onClick);
 
     this.markers.push(marker);
