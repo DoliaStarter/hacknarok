@@ -2,6 +2,27 @@ table {
     width: 100%;
   }
 
-  .item:hover {
-    background-color: whitesmoke;
+  .header {
+    background-color: #1e1a31;
+    color: #ffffffd0;
+    text-align: center;
   }
+
+  .table-part {
+    color: #ffffffd0;
+    text-align: center;
+    background-color: transparent; 
+  }
+  
+  .item {
+    background-color: #15111be8;
+    
+  }
+  .item:hover {
+    color: 26272b;
+    background-color: #13111b;
+  }
+
+  .ng-tns-c98-1 {
+    color:white;
+   }

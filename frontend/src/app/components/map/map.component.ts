@@ -23,7 +23,7 @@ class QuestMarkerModel extends mapboxgl.Marker {
 export class MapComponent implements OnInit {
 
   map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/streets-v11';
+  style = 'mapbox://styles/mapbox/dark-v10';
 
 
   public markers: Array<QuestMarkerModel> = [];
@@ -35,7 +35,7 @@ export class MapComponent implements OnInit {
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,
-      zoom: 13,
+      zoom: 2,
       center: [0, 0]
     });
     this.map.addControl(new mapboxgl.NavigationControl());
@@ -74,7 +74,7 @@ export class MapComponent implements OnInit {
       this.AddMarkerInPosition(point, isDragable, onClick);
     });
   }
-  
+
   public GetPoints(): Array<BasePointModel> {
     const result = new Array<BasePointModel>();
     this.markers.forEach((marker, index) => {
