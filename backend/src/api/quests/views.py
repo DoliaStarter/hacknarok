@@ -15,10 +15,64 @@ def index(request):
 #     })
 
 @csrf_exempt
+def getPoint(request, id):
+    point = QuestPoint.objects.get(id=id)
+    return JsonResponse({'point':point.title})
+
+
+@csrf_exempt
+def quest_search(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        substring = json_data["search"]
+        quests = Quest.objects.filter(title__contains=substring).all()
+        item_count = len(quests)
+        return JsonResponse({
+
+            'quests': [{
+
+                'id': quest.id,
+                'title': quest.title,
+                'description': quest.description,
+                
+            } for quest in quests],
+
+            'itemCount': item_count})
+
+
+def _get_user_and_quest_POST(request):
+    json_data = json.loads(request.body)
+    user = json_data["user"]
+    started_quest = json_data["quest"]
+    return user, started_quest
+
+
+@csrf_exempt
+def start_session(request, id):
+    started_quest = Quest.objects.get(id=id)
+    if request.method == 'POST':
+        json_data = json.loads(request.body)
+        login = json_data["login"]
+        Sessions(user=User.objects.get(login=login), \
+            quest=started_quest).save()
+        return HttpResponse("True")
+    return HttpResponse("False")
+
+
+@csrf_exempt
+def deleteQuest(request, id):
+    if request.method == 'DELETE':
+        quest = Quest.objects.filter(id=id)
+        if quest:
+            quest.delete()
+            return HttpResponse("Deleted")
+        return HttpResponse("No such id")
+
+
+@csrf_exempt
 def get_quest_model(request, id):
-    quest_to_return = Quest.objects.filter(id=id)
+    quest_to_return = Quest.objects.get(id=id)
     print(quest_to_return)
-    quest_to_return = dict(quest_to_return)
     q_title = quest_to_return.title
     q_creator = quest_to_return.creator
     q_creator_id = q_creator.id
@@ -36,6 +90,7 @@ def get_quest_model(request, id):
         'points': q_points
 
     })
+
 
 @csrf_exempt
 def get_quest_point_model(request, id):
