@@ -1,22 +1,32 @@
 <div mat-dialog-content>
-    <div class="login-container">
-        <mat-form-field class="example-form-field">
-            <mat-label>Login</mat-label>
-            <input matInput type="text" [(ngModel)]="login" placeholder="Your login">
-        </mat-form-field>
-        <mat-form-field class="example-form-field">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" [(ngModel)]="password" placeholder="Your password">
-        </mat-form-field>
+  <div class="login-container">
+    <mat-form-field class="example-form-field">
+      <mat-label>Login</mat-label>
+      <input matInput type="text" [(ngModel)]="login" placeholder="Your login">
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" [(ngModel)]="password" placeholder="Your password">
+    </mat-form-field>
 
-        <p *ngIf="isLogin">Don't have an account? <button class="highlight" (click)="isLogin=false">Register
-                now</button>
-        <p *ngIf="!isLogin">Already have an account? <button class="highlight" (click)="isLogin=true">Login now</button>
+    <p *ngIf="isLogin">Don't have an account?
+      <button class="highlight" (click)="isLogin=false">Register
+        now
+      </button>
+      <!--    <p *ngIf="!isLogin">Already have an account?-->
+      <!--      <button class="highlight" (click)="isLogin=true">Login now</button>-->
 
-    </div>
-    <button (click)="onNoClick()" mat-raised-button onclick="">Cancel</button>
-    <button type="submit" (click)="OnLoginClicked()" mat-raised-button color="primary">
-        <span *ngIf="isLogin">Login</span>
-        <span *ngIf="!isLogin">Register</span>
+  </div>
+  <div id="signInUp">
+    <button class="but" (click)="isLogin=true" mat-raised-button>Sign In</button>
+    <div class="kostyl"></div>
+
+    <button class="but" type="submit" (click)="OnLoginClicked()" mat-raised-button color="primary">
+
+      <span class="but" *ngIf="isLogin">Login</span>
+      <span class="but" *ngIf="!isLogin">Sign Up</span>
     </button>
+    <div class="kostyl"></div>
+
+  </div>
 </div>
