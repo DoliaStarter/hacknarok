@@ -19,7 +19,7 @@ def get_quest_list_model(request):
 
 def get_quest_model(request):
     q_id = request.GET['id']
-    quest_to_return = Quest.objects.filter(id=q_id)
+    quest_to_return = Quest.object5s.filter(id=q_id)
     q_title = quest_to_return.title
     q_creator_id = quest_to_return.creator.id
     q_creator = quest_to_return.creator.login
