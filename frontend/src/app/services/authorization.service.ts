@@ -2,6 +2,11 @@ import { Injectable, Host } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { loginUrl, registerUrl, UserModel } from '../app.config';
 
+interface UserInfo {
+  login: string;
+  userId: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -10,8 +15,13 @@ export class AuthorizationService {
   constructor(public httpClient: HttpClient) { }
 
   private authorized: boolean;
-  private userId: number;
-  public GetCurrentUserId() {
+  private currentUser: UserInfo;
+  public GetCurrentUser(): UserInfo {
+
+    return {
+      login: "John",
+      userId: 0
+    }
 
   }
 
