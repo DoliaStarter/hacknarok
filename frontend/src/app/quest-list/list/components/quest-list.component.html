@@ -1,0 +1,28 @@
+<div>
+    <table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <td mat-cell *matCellDef="let quest"> {{quest.title}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="creator">
+            <th mat-header-cell *matHeaderCellDef> Creator </th>
+            <td mat-cell *matCellDef="let quest"> {{quest.creator}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="gamesCount">
+            <th mat-header-cell *matHeaderCellDef> Games count </th>
+            <td mat-cell *matCellDef="let quest"> {{quest.gamesCount}} </td>
+        </ng-container>
+        
+        
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr class="item" mat-row
+        (click)="onItemClicked(quest)"
+         *matRowDef="let quest; columns: columnsToDisplay"></tr>    
+    </table>
+    <mat-paginator [length]="itemCount" [pageSizeOptions]="pageSizes">
+    </mat-paginator>
+</div>
+
+

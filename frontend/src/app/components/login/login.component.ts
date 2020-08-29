@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { AuthorizationService } from '../../services/authorization.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -8,8 +9,9 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent implements OnInit {
-
+export class LoginComponent implements OnInit, OnDestroy {
+  private logSubscription: Subscription;
+  private regSubscription: Subscription;
 
   constructor(
     private authService: AuthorizationService,
@@ -24,14 +26,22 @@ export class LoginComponent implements OnInit {
   }
 
   OnLoginClicked() {
-
     if (this.isLogin)
       this.authService.Login(this.login, this.password);
     else
       this.authService.Register(this.login, this.password);
     this.dialogRef.close()
+
+    this.dialogRef.close();
   }
 
+  ngOnDestroy() {
+    this.regSubscription && this.regSubscription.unsubscribe();
+    this.logSubscription && this.logSubscription.unsubscribe();
+
+  }
+
+  
   onNoClick(): void {
     this.dialogRef.close();
   }
