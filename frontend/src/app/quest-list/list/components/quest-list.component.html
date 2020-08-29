@@ -17,7 +17,9 @@
         
         
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-        <tr mat-row *matRowDef="let quest; columns: columnsToDisplay"></tr>
+        <tr class="item" mat-row
+        (click)="onItemClicked(quest)"
+         *matRowDef="let quest; columns: columnsToDisplay"></tr>    
     </table>
     <mat-paginator [length]="itemCount" [pageSizeOptions]="pageSizes">
     </mat-paginator>

@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { mapApiToken, BasePointModel } from "../../app.config";
+import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
+import { BasePointModel, mapApiToken } from "../../app.config";
 
 @Component({
   selector: 'app-map',
@@ -43,7 +43,7 @@ export class MapComponent implements OnInit {
     navigator.geolocation.getCurrentPosition(position => {
 
       this.map.setCenter([position.coords.longitude, position.coords.latitude]);
-    })
+    });
   }
 
   public DeleteMarker(index: number) {
@@ -52,24 +52,25 @@ export class MapComponent implements OnInit {
   }
 
 
-  public AddRangeMarkers(points: Array<BasePointModel>, isDragable: boolean) {
+  public AddRangeMarkers(points: Array<BasePointModel>, isDragable: boolean, onClick?: (point) => void) {
     points.forEach(point => {
-      this.AddMarkerInPosition([point.long, point.lati], isDragable);
+      this.AddMarkerInPosition([point.long, point.lati], isDragable, onClick);
     });
   }
+  
   public GetPoints(): Array<BasePointModel> {
-    let i = 0;
     const result = new Array<BasePointModel>();
-    this.markers.forEach(marker => {
+    this.markers.forEach((marker, index) => {
       result.push(
         {
-          pointId: i,
+          pointId: index,
           lati: marker.getLngLat().lat,
           long: marker.getLngLat().lng
 
         }
       )
     });
+    return result;
   }
 
 
@@ -77,7 +78,7 @@ export class MapComponent implements OnInit {
 
     this.AddMarkerInPosition(this.map.getCenter(), isDraggable, onClick);
   }
-  public AddMarkerInPosition(position: mapboxgl.LngLatLike, isDraggable: boolean, onClick?: EventListener) {
+  public AddMarkerInPosition(position: mapboxgl.LngLatLike, isDraggable: boolean, onClick?: (point) => void) {
     var marker = new mapboxgl.Marker({
       draggable: isDraggable,
 
@@ -86,12 +87,24 @@ export class MapComponent implements OnInit {
       .addTo(this.map);
 
 
-    marker.getElement().addEventListener('click', onClick);
+    marker.getElement().addEventListener('click', (e) => {
+      if(onClick) {
+        onClick(this.toBasePoint(marker));
+      }
+      }
+      );
 
+  
     this.markers.push(marker);
   }
 
-
+  private toBasePoint(marker: mapboxgl.Marker): BasePointModel {
+          return {
+          pointId: 1,
+          lati: marker.getLngLat().lat,
+          long: marker.getLngLat().lng
+        }
+  }
 }
 
 

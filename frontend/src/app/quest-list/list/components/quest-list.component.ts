@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { QuestModel } from '../../../app.config';
+import { questDetailsRoute, QuestModel } from '../../../app.config';
 import { QuestListService } from '../services/quest-list.service';
 
 
@@ -39,7 +40,12 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
     this.dataSource.paginator = this.paginator;
   }
 
+  onItemClicked(item:QuestModel) {
+    this.router.navigateByUrl(`${questDetailsRoute}/${item.id}`);
+  }
+  
   constructor(
-    protected questListService: QuestListService
+    protected questListService: QuestListService,
+    protected router: Router
   ) { }
 }

@@ -14,21 +14,25 @@ export class QuestListService {
         {
           quests: [
             {
+            id: 1,
             title: 'cool',
             creator: 'anddsrew',
             gamesCount: 10,
           },
           {
+            id: 2,
             title: 'coo',
             creator: 'andrew',
             gamesCount: 10,
           },
           {
+            id: 3,
             title: 'cool',
             creator: 'anddsrew',
             gamesCount: 10,
           },
           {
+            id: 4,
             title: 'coo',
             creator: 'andrew',
             gamesCount: 10,
