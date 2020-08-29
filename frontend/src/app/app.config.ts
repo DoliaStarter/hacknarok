@@ -28,6 +28,7 @@ interface QuestPointModel extends BasePointModel {
     status: PointStatus;
     description: string;
     title: string;
+    canOpenPoints: QuestPointModel[];
 }
 
 enum PointStatus {
