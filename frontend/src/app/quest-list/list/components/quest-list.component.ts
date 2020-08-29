@@ -4,8 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { questDetailsRoute, QuestModel } from '../../../app.config';
+import { QuestFiltersModel } from '../models/quest-filters.model';
 import { QuestListService } from '../services/quest-list.service';
-
 
 @Component({
   selector: 'app-quest-list',
@@ -24,12 +24,19 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
   ngOnInit() {
-    this.questListServiceSubscription = this.questListService.getQuestList().subscribe(
-      data => {
-        this.dataSource.data = data.quests;
-        this.itemCount = data.itemCount;
-      }
-    )
+    navigator.geolocation.getCurrentPosition(position => {
+      const posAsFitlers: QuestFiltersModel  = { 
+        lati: position.coords.latitude,
+        long: position.coords.longitude,
+        range: 5
+       };
+      this.questListServiceSubscription = this.questListService.getQuestList(posAsFitlers).subscribe(
+        data => {
+          this.dataSource.data = data.quests;
+          this.itemCount = data.itemCount;
+        }
+      )  
+    })
   }
   
   ngOnDestroy () {

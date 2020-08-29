@@ -22,7 +22,13 @@ export class QuestDescriptionService {
                     pointId: 5,
                     lati: 0,
                     long: 0,
-                  }
+                  },
+                  {
+                    pointId: 10,
+                    lati: 11,
+                    long: 10,
+                  },
+
                 ]
             });
     }
