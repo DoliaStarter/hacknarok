@@ -14,39 +14,19 @@ def index(request):
 #
 #     })
 
-def quest_search(request):
-    substring = request.GET['substring']
-    quests = Quest.objects.filter(title__contains=substring).all()
-    item_count = len(quests)
-    return JsonResponse({
-        'quests': quests,
-        'itemCount': item_count})
-
-
-def _get_user_and_quest_POST(request):
-    json_data = json.loads(request.body)
-    user = json_data["user"]
-    started_quest = json_data["quest"]
-    return user, started_quest
-
-
-def start_session(request):
-    user, started_quest = _get_user_and_quest_POST()
-    new_session = Sessions(user=user, quest=started_quest)
-    new_session.save()
-
-
-def get_quest_model(request):
-    q_id = request.GET['id']
-    quest_to_return = Quest.objects.filter(id=q_id)
+@csrf_exempt
+def get_quest_model(request, id):
+    quest_to_return = Quest.objects.filter(id=id)
+    quest_to_return = quest_to_return[0]
     q_title = quest_to_return.title
-    q_creator_id = quest_to_return.creator.id
-    q_creator = quest_to_return.creator.login
+    q_creator = quest_to_return.creator
+    q_creator_id = q_creator.id
+    q_creator = q_creator.login
     q_games_count = 10  # Quest.join(Sessions.quest).user.count()
     q_description = quest_to_return.description
     q_points = list(QuestPoint.objects.filter(quest=quest_to_return))
     return JsonResponse({
-        'id': q_id,
+        'id': id,
         'title': q_title,
         'creatorId': q_creator_id,
         'creator': q_creator,
@@ -56,10 +36,9 @@ def get_quest_model(request):
 
     })
 
-
-def get_quest_point_model(request):
-    qp_id = request.GET['id']
-    quest_point_to_return = QuestPoint.objects.filter(id=qp_id)
+@csrf_exempt
+def get_quest_point_model(request, id):
+    quest_point_to_return = QuestPoint.objects.filter(id=id)
     qp_status = quest_point_to_return.status
     qp_description = quest_point_to_return.description
     qp_title = quest_point_to_return.title
@@ -69,7 +48,7 @@ def get_quest_point_model(request):
         'status': qp_status,
         'description': qp_description,
         'title': qp_title,
-        'pointId': qp_id,
+        'pointId': id,
         'lati': bp_lati,
         'long': bp_long,
 
@@ -78,27 +57,29 @@ def get_quest_point_model(request):
 
 def _getQuestFromPOST(request):
     json_data = json.loads(request.body)
-    id = json_data["id"]
     title = json_data["title"]
-    creator = json_data["creator"]
+    #creator = json_data["creator"]
     creator_id = json_data["creator_id"]
     description = json_data["description"]
     points = json_data["points"]
-    return id, title, creator, creator_id, description, points
+    return title, creator_id, description, points
 
 
 @csrf_exempt
 def quest(request):
     if request.method == 'POST':
-        id, title, creator_name, creator_id, description, points = _getQuestFromPOST(request)
-        creator = User.objects.filter(id=creator_id)
-        new_quest = Quest(title=title, creator=creator, description=description)
-        new_quest.save()
-        for point in points:
-            new_point = QuestPoint(status=point.status, title=point.title, description=point.description,
-                                   latitude=point.lati, longitude=point.long, quest=point.quest,
-                                   parentPoint=point.parentPoint)
-            new_point.save()
+        title, creator_id, description, points = _getQuestFromPOST(request)
+        creator = User.objects.filter(id=creator_id)[0]
+        Quest(title=title, creator=creator, description=description).save()
+        if points:
+            for point in points:
+                QuestPoint(status=point['status'], \
+                            title=point['title'], \
+                            description=point['description'], \
+                            latitude=point['latitude'], \
+                            longitude=point['longitude'], \
+                            quest=point['quest'],\
+                            parentPoint=point['parentPoint']).save() 
         return HttpResponse('Successfully created')
     else:
         quest_list_model = list(Quest.objects.order_by('title'))
