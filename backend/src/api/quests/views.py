@@ -17,7 +17,8 @@ def index(request):
 @csrf_exempt
 def get_quest_model(request, id):
     quest_to_return = Quest.objects.filter(id=id)
-    quest_to_return = quest_to_return[0]
+    print(quest_to_return)
+    quest_to_return = dict(quest_to_return)
     q_title = quest_to_return.title
     q_creator = quest_to_return.creator
     q_creator_id = q_creator.id
