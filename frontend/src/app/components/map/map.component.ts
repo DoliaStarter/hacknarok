@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { BasePointModel, mapApiToken } from "../../app.config";
+import { BasePointModel, mapApiToken, QuestPointModel } from "../../app.config";
 
 interface QuestMarkerModelOptions extends mapboxgl.MarkerOptions {
   pointId?: number;
@@ -13,6 +13,9 @@ class QuestMarkerModel extends mapboxgl.Marker {
     this.pointId = options.pointId;
   }
   public pointId?: number;
+  public description?: string;
+  public title?: string;
+
 } 
 
 @Component({
@@ -22,7 +25,7 @@ class QuestMarkerModel extends mapboxgl.Marker {
 })
 export class MapComponent implements OnInit {
 
-  map: mapboxgl.Map;
+  public map: mapboxgl.Map;
   style = 'mapbox://styles/mapbox/dark-v10';
 
 
@@ -91,8 +94,8 @@ export class MapComponent implements OnInit {
   }
 
 
-  public AddMarkerAtCenter(isDraggable, onClick?: (point: BasePointModel) => void): void { 
-     // onDragEnd <- function which will be executed after drags end
+  public AddMarkerAtCenter(isDraggable:boolean, onClick?: (point: BasePointModel) => void): void { 
+   
     this.AddMarkerInPosition({long: this.map.getCenter().lng, lati: this.map.getCenter().lat}, isDraggable, onClick);
   }
   public AddMarkerInPosition( point: BasePointModel, isDraggable: boolean, onClick?: (point: BasePointModel) => void) {
@@ -108,7 +111,7 @@ export class MapComponent implements OnInit {
 
     marker.getElement().addEventListener('click', (e) => {
       if(onClick) {
-        onClick(this.toBasePoint(marker));
+        onClick(this.toQuestPoint(marker));
       }
       }
       );
@@ -122,6 +125,17 @@ export class MapComponent implements OnInit {
           long: marker.getLngLat().lng
         }
   }
+  private toQuestPoint(marker:QuestMarkerModel):QuestPointModel
+  {
+    return {
+        pointId:marker.pointId,
+        lati:marker.getLngLat().lat,
+        long:marker.getLngLat().lng,
+        title:marker.title,
+        description:marker.description
+    }
+  }
+
   private findClosestPoint(source: BasePointModel, points: BasePointModel[]) {
     return [...points].sort((a, b) => this.euclidianDistance(source, a) - this.euclidianDistance(source, b))[0];
   }

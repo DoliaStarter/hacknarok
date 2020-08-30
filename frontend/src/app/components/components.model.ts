@@ -11,6 +11,9 @@ import { LoginComponent } from './login/login.component';
 import { MapComponent } from './map/map.component';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { QuestCreatorComponent } from './quest-creator/quest-creator.component';
+import { PointEditorComponent } from './point-editor/point-editor.component';
+
 @NgModule({
   imports: [
     MatInputModule,
@@ -21,9 +24,10 @@ import { BrowserModule } from '@angular/platform-browser';
     MatToolbarModule,
     MatIconModule,
     CommonModule,
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
-  declarations: [MapComponent, LoginComponent, HeaderComponent],
-  exports: [MapComponent, LoginComponent, HeaderComponent]
+  declarations: [MapComponent, LoginComponent, HeaderComponent, QuestCreatorComponent, PointEditorComponent],
+  exports: [MapComponent, LoginComponent, HeaderComponent, QuestCreatorComponent,PointEditorComponent]
 })
 export class ComponentsModule { }
