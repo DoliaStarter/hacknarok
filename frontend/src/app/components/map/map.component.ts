@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { BasePointModel, mapApiToken, PointStatus, QuestPointModel } from "../../app.config";
+import {BasePointModel, mapApiToken, PointStatus, QuestPointModel} from "../../app.config";
 
-type QuestMarkerModelOptions  = mapboxgl.MarkerOptions & QuestMarkerModel;
-  
+type QuestMarkerModelOptions = mapboxgl.MarkerOptions & QuestMarkerModel;
 
 
 class QuestMarkerModel extends mapboxgl.Marker {
@@ -15,11 +14,12 @@ class QuestMarkerModel extends mapboxgl.Marker {
     this.description = options.description;
     this.title = options.title;
   }
+
   public pointId?: number;
   public description?: string;
   public title?: string;
   public status?: PointStatus;
-} 
+}
 
 @Component({
   selector: 'app-map',
@@ -35,7 +35,9 @@ export class MapComponent implements OnInit {
   public markers: Array<QuestMarkerModel> = [];
 
 
-  constructor() { }
+  constructor() {
+  }
+
   ngOnInit() {
     (mapboxgl as any).accessToken = mapApiToken;
     this.map = new mapboxgl.Map({
@@ -55,16 +57,16 @@ export class MapComponent implements OnInit {
     );
 
 
-
     this.CenterMap();
   }
+
   public CenterMap() {
     navigator.geolocation.getCurrentPosition(position => {
       const currentPoint: BasePointModel = {
         lati: position.coords.latitude,
         long: position.coords.longitude
       };
-      const closestPoint = this.findClosestPoint(currentPoint, this.GetPoints()) || currentPoint;      
+      const closestPoint = this.findClosestPoint(currentPoint, this.GetPoints()) || currentPoint;
       this.map.setCenter([closestPoint.long, closestPoint.lati]);
     });
   }
@@ -73,7 +75,7 @@ export class MapComponent implements OnInit {
     this.markers[index].remove();
     this.markers.splice(index, 1);
   }
-  
+
   updateMarkers(points: Array<BasePointModel>, isDragable: boolean, onClick?: (point) => void) {
     this.markers.forEach(m => m.remove());
     this.markers = [];
@@ -102,43 +104,56 @@ export class MapComponent implements OnInit {
     return result;
   }
 
-  
 
-  public AddMarkerAtCenter(isDraggable:boolean, onClick?: (point: BasePointModel) => void): void { 
-   
+  public AddMarkerAtCenter(isDraggable: boolean, onClick?: (point: BasePointModel) => void): void {
+
     this.AddMarkerInPosition({long: this.map.getCenter().lng, lati: this.map.getCenter().lat}, isDraggable, onClick);
   }
-  public AddMarkerInPosition( point: QuestPointModel, isDraggable: boolean, onClick?: (point: BasePointModel) => void) {
+
+  public AddMarkerInPosition(point: QuestPointModel, isDraggable: boolean, onClick?: (point: BasePointModel) => void) {
     var position: mapboxgl.LngLatLike = [point.long, point.lati];
-    
-    var marker = new QuestMarkerModel({
-      draggable: isDraggable,
-      pointId: point.pointId,
-      title: point.title,
-      description: point.description,
-      status: point.status
-    })
-      .setLngLat(position)
-      .addTo(this.map);
+
+    let point_color;
+    let to_render = true;
+    if (point.status == "visible") {
+      point_color = "#673ab6"
+    } else if (point.status == "visited") {
+      point_color = "#46ff00"
+    } else {
+      point_color = "#ff0000"
+      to_render = false
+    }
+
+    if (to_render) {
+      var marker = new QuestMarkerModel({
+        "color": point_color,
+        draggable: isDraggable,
+        pointId: point.pointId,
+        title: point.title,
+        description: point.description,
+        status: point.status
+      })
+        .setLngLat(position)
+        .addTo(this.map);
 
 
-    marker.getElement().addEventListener('click', (e) => {
-      if(onClick) {
-        onClick(this.toQuestPoint(marker));
-      }
-      }
+      marker.getElement().addEventListener('click', (e) => {
+          if (onClick) {
+            onClick(this.toQuestPoint(marker));
+          }
+        }
       );
-    this.markers.push(marker);
+      this.markers.push(marker);
+    }
   }
 
-  public toQuestPoint(marker:QuestMarkerModel):QuestPointModel
-  {
+  public toQuestPoint(marker: QuestMarkerModel): QuestPointModel {
     return {
-        pointId:marker.pointId,
-        lati:marker.getLngLat().lat,
-        long:marker.getLngLat().lng,
-        title:marker.title,
-        description:marker.description
+      pointId: marker.pointId,
+      lati: marker.getLngLat().lat,
+      long: marker.getLngLat().lng,
+      title: marker.title,
+      description: marker.description
     }
   }
 
