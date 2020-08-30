@@ -1,7 +1,7 @@
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterEvent } from '@angular/router';
 import { createQuestRoute } from '../../app.config';
 import { LayoutEventType, LayoutService } from '../../services/layout.service';
 import { LoginComponent } from '../login/login.component';
@@ -16,6 +16,8 @@ export class HeaderComponent implements OnInit {
   @Output()
   openMenuClick = new EventEmitter();
 
+  public showQuests:boolean=true;
+  public showCreate:boolean=true;
   viewActiveQuests: boolean;
 
   get viewActiveQuestsLabel() {
@@ -26,7 +28,9 @@ export class HeaderComponent implements OnInit {
     public dialog: MatDialog,
     protected location: Location,
     protected router: Router,
-    protected layoutService: LayoutService ) { }
+    protected layoutService: LayoutService ) { 
+     
+    }
 
   ngOnInit(): void {
   }
@@ -40,13 +44,16 @@ export class HeaderComponent implements OnInit {
   onViewActiveClick() {
     this.layoutService.events.next( this.viewActiveQuests ? LayoutEventType.ShowAllQuests : LayoutEventType.ShowActiveQuests );
     this.viewActiveQuests = !this.viewActiveQuests;
+
   }
 
   onCreateClick() {
+
     this.router.navigateByUrl(createQuestRoute);
   }
 
   onGoBackClick() {
+
     this.location.back();
   }
 
