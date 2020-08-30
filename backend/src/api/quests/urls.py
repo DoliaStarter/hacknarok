@@ -4,7 +4,7 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', views.quest, name='questList'),
+    path('add', views.quest, name='questList'),
     path('search', views.quest_search, name='questSearch'),
     path('<int:id>/', views.get_quest_model, name='quest'),
     path('<int:id>/delete', views.deleteQuest, name='delete_quest'),

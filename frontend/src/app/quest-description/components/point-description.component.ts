@@ -20,7 +20,7 @@ export class PointDescriptionComponent {
         navigator.geolocation.getCurrentPosition(position => {
             if(position) {
                 const userAnswer = {
-                    id: this.data.pointId,
+                    pointId: this.data.pointId,
                     lati: position.coords.latitude,
                     long: position.coords.longitude
                 } as BasePointModel;

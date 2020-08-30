@@ -1,9 +1,10 @@
-from django.http import JsonResponse, HttpResponse
+import json
+import math
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from src.models import *
-import math
-import json
 
 EARTH_RADIUS = 6371
 DISTANCE_CONST = 0.005
@@ -33,7 +34,6 @@ def isOnPoint(request):
 def isInRadius(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
-        print(json_data)
         radius = json_data["range"]/1000
         user_coord = (json_data["long"], json_data["lat"])
         for point in QuestPoint.objects.all():
@@ -50,7 +50,10 @@ def questFromJSON(quest):
     return{
         'id': quest.id,
         'title': quest.title,
-        'description': quest.description
+        'description': quest.description,
+        'creator': quest.creator.login,
+        'creatorId': quest.creator.id,
+        'gamesCount': 10
     }
 
 @csrf_exempt
@@ -62,18 +65,18 @@ def getPoint(request, id):
         })
 
 
+# 
+
 @csrf_exempt
 def quest_search(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
-        substring = json_data["search"]
+        substring = json_data.setdefault("title", '')
         quests = Quest.objects.filter(title__contains=substring).all()
         item_count = len(quests)
         return JsonResponse({
 
-            'quests': [{
-                questFromJSON(quest)
-            } for quest in quests],
+            'quests': [questFromJSON(quest) for quest in quests],
 
             'itemCount': item_count})
 
@@ -117,7 +120,7 @@ def get_quest_model(request, id):
     q_creator = q_creator.login
     q_games_count = 10  # Quest.join(Sessions.quest).user.count()
     q_description = quest_to_return.description
-    q_points = list(QuestPoint.objects.filter(quest=quest_to_return))
+    q_points = [dictFromPoint(point) for point in  QuestPoint.objects.filter(quest=quest_to_return)]
     return JsonResponse({
         'id': id,
         'title': q_title,
@@ -129,6 +132,15 @@ def get_quest_model(request, id):
 
     })
 
+def dictFromPoint(point):
+    return {
+        'status': point.status,
+        'title': point.title,
+        'description': point.description,
+        'lati': point.latitude,
+        'long': point.longitude,
+        'pointId': point.id
+    }
 
 @csrf_exempt
 def get_quest_point_model(request, id):
@@ -153,7 +165,8 @@ def _getQuestFromPOST(request):
     json_data = json.loads(request.body)
     title = json_data["title"]
     #creator = json_data["creator"]
-    creator_id = json_data["creator_id"]
+    # creator_id = json_data["creator_id"]
+    creator_id = 1
     description = json_data["description"]
     points = json_data["points"]
     return title, creator_id, description, points
@@ -167,15 +180,14 @@ def quest(request):
         thisQuest = Quest(title=title, creator=creator, description=description)
         thisQuest.save()
         for point in points:
-            quest = QuestPoint(status=point['status'], \
-                        title=point['title'], \
-                        description=point['description'], \
-                        latitude=point['latitude'], \
-                        longitude=point['longitude'], \
-                        quest=thisQuest,\
-                        parentPoint=point['parentPoint'])
+            quest = QuestPoint(status=point.setdefault('status', ''), \
+                        title=point.setdefault('title', ''), \
+                        description=point.setdefault('description', ''), \
+                        latitude=point.setdefault('lati', ''), \
+                        longitude=point.setdefault('long', ''), \
+                        quest=thisQuest)
             quest.save()
-        return HttpResponse('Successfully created')
+        return HttpResponse(JsonResponse({'message':'Successfully created'}))
     else:
         quest_list_model = list(Quest.objects.order_by('title'))
         item_count = Quest.objects.count()

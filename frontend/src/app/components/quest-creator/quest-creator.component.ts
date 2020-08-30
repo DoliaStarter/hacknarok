@@ -1,11 +1,10 @@
-import { Component, OnInit,ViewChild, AfterViewInit } from '@angular/core';
-import * as mapboxgl from 'mapbox-gl';
-import { BasePointModel, mapApiToken, QuestPointModel, QuestModel } from "../../app.config";
-import { MapComponent } from '../map/map.component';
-import { PointEditorComponent,DialogData } from '../point-editor/point-editor.component';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { title } from 'process';
+import * as mapboxgl from 'mapbox-gl';
+import { QuestModel, QuestPointModel } from "../../app.config";
 import { QuestEditorService } from '../../services/quest-editor.service';
+import { MapComponent } from '../map/map.component';
+import { DialogData, PointEditorComponent } from '../point-editor/point-editor.component';
 
 @Component({
   selector: 'app-quest-creator',
@@ -19,8 +18,8 @@ export class QuestCreatorComponent implements AfterViewInit {
   lastPoint:number;
 
   quest: QuestModel = {
-    'title': 'New quest',
-    creator: 'Author',
+    title: '',
+    creator: '',
     gamesCount:0,
     points:[]
   };
@@ -41,8 +40,8 @@ export class QuestCreatorComponent implements AfterViewInit {
     this.map.markers[this.map.markers.length-1].pointId=this.iterator;
     this.iterator++;
     const point=  this.map.toQuestPoint(this.map.markers[this.map.markers.length-1]);
-    point.description="Description of point goes here";
-    point.title="New point";
+    point.description="";
+    point.title="";
  
     this.quest.points.push(point);
     point.canOpenPoints=[];

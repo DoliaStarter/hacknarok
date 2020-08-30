@@ -6,5 +6,5 @@ from . import logic
 urlpatterns = [
     path('example', logic.example),
     path('users/', include('src.api.user.urls')),
-    #path('quests/', include('src.api.quests.urls')),
+    path('quests/', include('src.api.quests.urls')),
 ]
