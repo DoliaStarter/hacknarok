@@ -1,0 +1,28 @@
+.creator-form
+{
+    display: flex;
+    flex-direction: column;
+
+}
+.description
+{
+   width: 500px;
+  
+}
+.title
+{
+   width: 250px;
+}
+.mapboxgl-canvas
+{
+   width: 200px;
+   height: 200px;
+}
+textarea.mat-input-element {
+    height: 200px;
+}
+.main
+{
+    display: flex;
+}
+
