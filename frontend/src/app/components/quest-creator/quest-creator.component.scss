@@ -1,13 +1,13 @@
 .creator-form {
   display: flex;
   flex-direction: column;
-  color: white;
+ 
   background: #26272b;
 }
 
 .description {
   width: 500px;
-  color: white;
+
    margin: 30px;
 
 }
@@ -15,7 +15,7 @@
 .title {
   width: 250px;
   margin: 30px;
-  color: white;
+
 }
 
 .mapboxgl-canvas {
@@ -37,9 +37,12 @@ textarea.mat-input-element {
 }
 
 
+
+
 #cr_form {
   width: 40%;
   height: 100%;
+  
 }
 
 .creator-form {
@@ -50,6 +53,7 @@ textarea.mat-input-element {
   border-radius: 30px;
   border: 3px solid #673ab6;
   overflow: hidden;
+  background-color: whitesmoke;
 
 
 }
