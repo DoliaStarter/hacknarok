@@ -22,7 +22,7 @@ export class QuestCreatorComponent implements AfterViewInit {
   lastPoint:number;
   points: Array<QuestPointModel>=[];
 
-  tree ={};
+  tree =[];
    
   iterator:number=0;
   @ViewChild(MapComponent, {static: true}) map: MapComponent;
@@ -41,8 +41,31 @@ export class QuestCreatorComponent implements AfterViewInit {
     point.description="Description of point goes here";
     point.title="New point";
     this.iterator++;
-    this.tree[point.pointId]=[];
+    var tmp= new Array<{id:number, canBeVisited:boolean}>();
+
+
+    this.map.markers.forEach(element => {
+        tmp.push(
+          {
+            id:element.pointId,
+            canBeVisited:false
+          }
+        )
+    });
     
+
+    this.tree.forEach(element => {
+          element.push(
+            {
+              id:point.pointId,
+              canBeVisited:false
+            }
+          )
+     
+    });
+    this.tree[point.pointId]=tmp;
+    
+   
 
   }
    Save()
@@ -51,30 +74,50 @@ export class QuestCreatorComponent implements AfterViewInit {
    }
   private onPointClicked(point: QuestPointModel) {
     this.lastPoint=point.pointId;
-    let possible= new Array<{title:string, id:number, canBeVisited:boolean}>();
-    this.map.markers.forEach(element => {
-      possible.push(
-        {
-          id:element.pointId,
-          title:title,
-          canBeVisited:false
-        }
-      )
-    });
+    let possible= new Array<{title:string, id:number, canBeVisited:boolean}>()
+
+
+    console.log(this.tree);
+    this.tree[point.pointId].forEach(element => {
+         possible.push(
+            {
+              title:this.map.markers[element.id].title,
+              id:element.id,
+              canBeVisited:element.canBeVisited
+            }
+         );
+     });
+     console.log(possible);
+     
     const dialogRef = this.dialog.open(PointEditorComponent, {
       width: '800px',
       height: '600px',
       data: {title: point.title, description:point.description,
-      possible: this.map.markers}
+      possible: possible }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
-      console.log(result);
+     
       this.map.markers[this.lastPoint].title=result.title;
       this.map.markers[this.lastPoint].description=result.description;
-      this.tree[point.pointId] = result.possible;
 
+      console.log(result.possible);
+      var tmp= new Array<{id:number, canBeVisited:boolean}>();
+
+
+     result.possible.forEach(element => {
+        tmp.push(
+          {
+            id:element.id,
+            canBeVisited: element.canBeVisited
+          }
+        )
+    });
+      this.tree[point.pointId] = tmp;
+      console.log(this.tree);
+   
+      
     });
     
   }

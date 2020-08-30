@@ -12,10 +12,10 @@
       </mat-form-field>
       <button (click)="onNoClick()" >Save</button>
      
-        <span *ngFor="let point of data.possible">
+        <span *ngFor="let p of data.possible">
           <br>
-          <mat-checkbox [(ngModel)]="point.canBeVisited" [color]="'primary'" name="visited">
-                 {{point.title}}
+          <mat-checkbox [(ngModel)]="p.canBeVisited" [color]="'primary'" name="visited">
+                 {{p.title}}
           </mat-checkbox>
           
         </span>
