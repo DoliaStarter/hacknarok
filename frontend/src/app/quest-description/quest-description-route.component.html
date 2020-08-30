@@ -1,4 +1,8 @@
 <div class="description">
+  <div id="plate1">
     <app-quest-description [quest]="quest"></app-quest-description>
-    <app-quest-point-description [points]="quest.points"></app-quest-point-description>
+  </div>
+  <div id="plate2">
+    <app-quest-point-description [questId]="quest.id" [points]="quest.points"></app-quest-point-description>
+  </div>
 </div>

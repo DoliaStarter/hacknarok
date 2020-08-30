@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from src.api.quests.views import getPoint
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/point/<int:id>', getPoint),
     path('api/', include('src.api.urls')),
 ]

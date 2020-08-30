@@ -2,11 +2,14 @@ const host = 'http://localhost:8000';
 export const exampleServiceUrl = `${host}/api/example`;
 export const loginUrl = `${host}/api//users/login`;
 export const registerUrl = `${host}/api/users/register`;
-export const mapApiToken = 'pk.eyJ1IjoiZHVzaGVzcyIsImEiOiJja2VmcWpneHcwc201MnluNzl3ZDRjNDl1In0.sV8IejZBXjXoUbHgRGeN6w'
+export const createQuestUrl=  `${host}/api/quests/add`;
+export const mapApiToken = 'pk.eyJ1IjoiZHVzaGVzcyIsImEiOiJja2VmcWpneHcwc201MnluNzl3ZDRjNDl1In0.sV8IejZBXjXoUbHgRGeN6w';
 export const questListServiceUrl = `${host}/api/quests`;
+export const pointsUrl = `${host}/api/point`
 
 // router 
 export const questDetailsRoute = 'quest-details';
+export const createQuestRoute = 'create-quest';
 
 // models
 // list
@@ -43,13 +46,13 @@ export enum PointStatus {
 }
 
 
-// endpoint POST api/quests/{id}/answers
+// endpoint POST api/quests/{id}/answers <- changed to api/quests/answers/{pointId}
 // when user in point and want to submit answer
 // we send BasePointModel -> answer:
 // SUCCESS -> new QuestModel
 // Failure -> Failure
 export interface BasePointModel {
-    pointId: number;
+    pointId?: number;
     long: number;
     lati: number;
 }
