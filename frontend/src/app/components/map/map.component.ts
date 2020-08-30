@@ -114,32 +114,37 @@ export class MapComponent implements OnInit {
     var position: mapboxgl.LngLatLike = [point.long, point.lati];
 
     let point_color;
+    let to_render = true;
     if (point.status == "visible") {
       point_color = "#673ab6"
     } else if (point.status == "visited") {
       point_color = "#46ff00"
     } else {
       point_color = "#ff0000"
+      to_render = false
     }
-    var marker = new QuestMarkerModel({
-      "color": point_color,
-      draggable: isDraggable,
-      pointId: point.pointId,
-      title: point.title,
-      description: point.description,
-      status: point.status
-    })
-      .setLngLat(position)
-      .addTo(this.map);
+
+    if (to_render) {
+      var marker = new QuestMarkerModel({
+        "color": point_color,
+        draggable: isDraggable,
+        pointId: point.pointId,
+        title: point.title,
+        description: point.description,
+        status: point.status
+      })
+        .setLngLat(position)
+        .addTo(this.map);
 
 
-    marker.getElement().addEventListener('click', (e) => {
-        if (onClick) {
-          onClick(this.toQuestPoint(marker));
+      marker.getElement().addEventListener('click', (e) => {
+          if (onClick) {
+            onClick(this.toQuestPoint(marker));
+          }
         }
-      }
-    );
-    this.markers.push(marker);
+      );
+      this.markers.push(marker);
+    }
   }
 
   public toQuestPoint(marker: QuestMarkerModel): QuestPointModel {
