@@ -3,10 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { QuestModel, startQuestUrl } from '../../app.config';
 import { tap } from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
-import {PointStatus, QuestModel} from '../../app.config';
+import {PointStatus} from '../../app.config';
 
 
 @Injectable({
