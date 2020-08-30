@@ -67,8 +67,8 @@ export class QuestCreatorComponent implements AfterViewInit {
      
 
     const dialogRef = this.dialog.open(PointEditorComponent, {
-      width: '400px',
-      height: '300px',
+      width: '500px',
+      height: '400px',
       data:  data
     });
 
