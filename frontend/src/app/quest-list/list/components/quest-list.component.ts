@@ -57,6 +57,7 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
     );}
 
   showClosestQuests(filters: QuestFiltersModel) {
+    this.layoutService.events.next(LayoutEventType.StartWait);
     navigator.geolocation.getCurrentPosition(position => {
       const posAsFitlers: QuestFiltersModel  = { 
         lati: position.coords.latitude,
@@ -64,15 +65,14 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
         range: filters.range,
         ...filters,
       };
+      this.layoutService.events.next(LayoutEventType.StopWait);
       this.updateList(posAsFitlers);
     })
   }
 
-  
-
-
-  
+   
   public refresh(filters: QuestFiltersModel) {
+    
     if (this.isPositionFilterActive) {
       this.showClosestQuests(filters);
     } else {
@@ -82,6 +82,7 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
 
 
   updateList(filters: QuestFiltersModel) {
+    this.layoutService.events.next(LayoutEventType.StartWait);
     if (this.questListServiceSubscription) {
       this.questListServiceSubscription.unsubscribe();
     }
@@ -92,6 +93,7 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
       data => {
         this.dataSource.data = data.quests;
         this.itemCount = data.itemCount;
+        this.layoutService.events.next(LayoutEventType.StopWait);
       }
     );
   }

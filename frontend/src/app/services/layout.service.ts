@@ -3,7 +3,9 @@ import { Subject } from 'rxjs';
 
 export enum LayoutEventType {
     ShowActiveQuests = 'showActiveQuests',
-    ShowAllQuests = 'showAllQuests'
+    ShowAllQuests = 'showAllQuests',
+    StartWait = 'startWait',
+    StopWait = 'stopWait'
 }
 
 @Injectable({
