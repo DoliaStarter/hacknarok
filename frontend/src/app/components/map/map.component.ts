@@ -1,21 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { BasePointModel, mapApiToken, QuestPointModel } from "../../app.config";
+import { BasePointModel, mapApiToken, PointStatus, QuestPointModel } from "../../app.config";
 
-interface QuestMarkerModelOptions extends mapboxgl.MarkerOptions {
-  pointId?: number;
-}
+type QuestMarkerModelOptions  = mapboxgl.MarkerOptions & QuestMarkerModel;
+  
+
 
 class QuestMarkerModel extends mapboxgl.Marker {
 
-  constructor(options: QuestMarkerModelOptions) {
+  constructor(options) {
     super(options);
     this.pointId = options.pointId;
+    this.status = options.status;
+    this.description = options.description;
+    this.title = options.title;
   }
   public pointId?: number;
   public description?: string;
   public title?: string;
-
+  public status?: PointStatus;
 } 
 
 @Component({
@@ -70,7 +73,13 @@ export class MapComponent implements OnInit {
     this.markers[index].remove();
     this.markers.splice(index, 1);
   }
-
+  
+  updateMarkers(points: Array<BasePointModel>, isDragable: boolean, onClick?: (point) => void) {
+    this.markers.forEach(m => m.remove());
+    this.markers = [];
+    this.AddRangeMarkers(points, isDragable, onClick);
+    this.CenterMap();
+  }
 
   public AddRangeMarkers(points: Array<BasePointModel>, isDragable: boolean, onClick?: (point) => void) {
     points.forEach(point => {
@@ -93,17 +102,21 @@ export class MapComponent implements OnInit {
     return result;
   }
 
+  
 
   public AddMarkerAtCenter(isDraggable:boolean, onClick?: (point: BasePointModel) => void): void { 
    
     this.AddMarkerInPosition({long: this.map.getCenter().lng, lati: this.map.getCenter().lat}, isDraggable, onClick);
   }
-  public AddMarkerInPosition( point: BasePointModel, isDraggable: boolean, onClick?: (point: BasePointModel) => void) {
+  public AddMarkerInPosition( point: QuestPointModel, isDraggable: boolean, onClick?: (point: BasePointModel) => void) {
     var position: mapboxgl.LngLatLike = [point.long, point.lati];
     
     var marker = new QuestMarkerModel({
       draggable: isDraggable,
-      pointId: point.pointId
+      pointId: point.pointId,
+      title: point.title,
+      description: point.description,
+      status: point.status
     })
       .setLngLat(position)
       .addTo(this.map);
@@ -118,13 +131,6 @@ export class MapComponent implements OnInit {
     this.markers.push(marker);
   }
 
-  private toBasePoint(marker: QuestMarkerModel): BasePointModel {
-          return {
-          pointId: marker.pointId,
-          lati: marker.getLngLat().lat,
-          long: marker.getLngLat().lng
-        }
-  }
   private toQuestPoint(marker:QuestMarkerModel):QuestPointModel
   {
     return {
