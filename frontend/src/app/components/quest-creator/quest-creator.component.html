@@ -1,20 +1,23 @@
 <div class="main">
 
-<div class="back" >
-<form class="creator-form" style="padding:10px">
-    <mat-form-field class="title">
-      <mat-label></mat-label>
-      <input matInput placeholder="Quest title" [(ngModel)]="quest.title" placeholder="Name your quest" name="title" >
-</mat-form-field>
-<mat-form-field class="description">
-    <mat-label>Description</mat-label>
-    <textarea  matInput type="text" [(ngModel)]="quest.description" placeholder="Your quest description goes here" name="description"> </textarea>
-</mat-form-field>
-<button mat-raised-button color="primary" style="height: 40px; width: 120px;" (click)="Save()" > Save quest </button>
-</form>
-</div>
-<div class="map-container">
+  <div id="cr_form">
+    <form class="creator-form">
+      <mat-form-field class="title">
+        <mat-label>Title</mat-label>
+        <input matInput placeholder="Quest title" [(ngModel)]="quest.title" value="New quest" name="title">
+      </mat-form-field>
+      <mat-form-field class="description">
+        <mat-label>Description</mat-label>
+        <textarea matInput type="text" [(ngModel)]="quest.description" value="Your quest description goes here"
+                  name="description"> </textarea>
+      </mat-form-field>
+      <button id="saveq" mat-raised-button color="primary" style="height: 40px; width: 120px;" (click)="Save()"> Save quest
+      </button>
+    </form>
+  </div>
+  <div class="map-container">
+
     <app-map></app-map>
-</div>
+  </div>
 
 </div>
