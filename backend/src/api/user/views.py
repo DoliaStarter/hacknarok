@@ -14,7 +14,8 @@ def getAciveQuests(request, id):
         'quests': [{
 
             'id': sessions.quest.id,
-            'title': sessions.quest.title
+            'title': sessions.quest.title,
+            'description': quest.description
 
         } for ssession in sessions]
     })
