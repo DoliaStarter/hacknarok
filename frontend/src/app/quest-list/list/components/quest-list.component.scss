@@ -26,3 +26,29 @@ table {
   .ng-tns-c98-1 {
     color:white;
    }
+
+   .filters {
+     border: 1px solid rgba(143, 94, 2, 0.89);
+     background-color: #ffffffd0;
+     padding: 5px 10px;
+     margin-bottom: 20px;
+     border-radius: 10px;
+     display: inline-block;
+   }
+
+   .filter-row {
+      display: flex;
+      justify-content: start;
+      * {
+        margin: 0px 5px
+      }
+   }
+
+   mat-checkbox ::ng-deep .mat-checkbox-inner-container {width: 25px;height: 25px;}
+
+   .check {
+     text-align: center;
+     vertical-align: middle;
+     padding-top: 20px;
+     font-size: large;
+   }

@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { questDetailsRoute, QuestModel } from '../../../app.config';
 import { LayoutEventType, LayoutService } from '../../../services/layout.service';
 import { QuestFiltersModel } from '../models/quest-filters.model';
@@ -14,10 +15,14 @@ import { QuestListService } from '../services/quest-list.service';
   styleUrls: ['./quest-list.component.scss']
 })
 export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
+  isPositionFilterActive: boolean = false;
   questListServiceSubscription: Subscription;
   itemCount: number;
+  filters: QuestFiltersModel = {range: 50} as QuestFiltersModel;
+  
   columnsToDisplay: string[] = ['title', 'creator', 'gamesCount'];
   
+
   dataSource = new MatTableDataSource<QuestModel>();
   
   pageSizes = [5, 10, 20];
@@ -28,14 +33,19 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
     this.layoutService.events.subscribe(event => {
       switch(event) {
         case LayoutEventType.ShowActiveQuests:
-          this.showCurrentUserQuests();
-          break;
+            this.showCurrentUserQuests();
+            break;
         case LayoutEventType.ShowAllQuests: 
-            this.showClosestQuests();
+            this.refresh(this.filters);
             break;
       }
     });
-    this.showClosestQuests();
+    this.refresh(this.filters);
+  }
+
+  setPositionFilter($event) {
+    this.isPositionFilterActive = $event;
+    this.refresh(this.filters);
   }
 
   showCurrentUserQuests() {
@@ -44,25 +54,46 @@ export class QuestListComponent implements OnInit, OnDestroy, AfterViewInit{
         this.dataSource.data = result.quests;
         this.itemCount = result.itemCount;
       }
-    );
+    );}
 
-  }
-
-  showClosestQuests(filters?: QuestFiltersModel) {
+  showClosestQuests(filters: QuestFiltersModel) {
     navigator.geolocation.getCurrentPosition(position => {
       const posAsFitlers: QuestFiltersModel  = { 
         lati: position.coords.latitude,
         long: position.coords.longitude,
-        range: 5,
+        range: filters.range,
         ...filters,
-       };
-      this.questListServiceSubscription = this.questListService.getQuestList(posAsFitlers).subscribe(
-        data => {
-          this.dataSource.data = data.quests;
-          this.itemCount = data.itemCount;
-        }
-      )  
+      };
+      this.updateList(posAsFitlers);
     })
+  }
+
+  
+
+
+  
+  public refresh(filters: QuestFiltersModel) {
+    if (this.isPositionFilterActive) {
+      this.showClosestQuests(filters);
+    } else {
+      this.updateList(filters);
+    }
+  }
+
+
+  updateList(filters: QuestFiltersModel) {
+    if (this.questListServiceSubscription) {
+      this.questListServiceSubscription.unsubscribe();
+    }
+    this.questListServiceSubscription = this.questListService.getQuestList(filters).pipe(
+      debounceTime(900),
+      distinctUntilChanged()
+    ).subscribe(
+      data => {
+        this.dataSource.data = data.quests;
+        this.itemCount = data.itemCount;
+      }
+    );
   }
   
   ngOnDestroy () {
