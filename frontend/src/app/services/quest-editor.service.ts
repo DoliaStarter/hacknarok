@@ -19,7 +19,7 @@ export class QuestEditorService {
     return this.httpClient.post<boolean>(createQuestUrl,<QuestModel> quest).pipe(
       tap(isSuccess => {
          alert('quest created');
-         this.router.navigate(['quests'], {'relativeTo':this.router})
+         this.router.navigate(['quests'])
       })
     )
   }
