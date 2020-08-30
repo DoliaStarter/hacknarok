@@ -1,15 +1,16 @@
 <form>
 <div mat-dialog-content>
     <div>
-      <mat-form-field class="example-form-field">
+      <mat-form-field >
         <mat-label>Title</mat-label>
-        <input matInput type="text" [(ngModel)]="data.title" placeholder="title" >
+        <input matInput type="text" [(ngModel)]="data.title" placeholder="title" name="title" >
       </mat-form-field>
-      <mat-form-field class="example-form-field">
+      <mat-form-field>
         <mat-label>Description</mat-label>
-        <textarea matInput type="text" [(ngModel)]="data.description" placeholder="description" >
+        <textarea matInput type="text" [(ngModel)]="data.description" placeholder="description" name="description">
             </textarea>
       </mat-form-field>
+      <button (click)="onNoClick()" >Save</button>
     </div>
 </div>
 </form>

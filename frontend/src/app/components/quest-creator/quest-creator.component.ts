@@ -2,6 +2,8 @@ import { Component, OnInit,ViewChild, AfterViewInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { BasePointModel, mapApiToken, QuestPointModel } from "../../app.config";
 import { MapComponent } from '../map/map.component';
+import { PointEditorComponent,DialogData } from '../point-editor/point-editor.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-quest-creator',
@@ -10,14 +12,15 @@ import { MapComponent } from '../map/map.component';
 })
 export class QuestCreatorComponent implements AfterViewInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   title:string;
   description:string;
   
 
+  lastPoint:number;
   points: Array<QuestPointModel>=[];
-  iterator:number;
+  iterator:number=0;
   @ViewChild(MapComponent, {static: true}) map: MapComponent;
 
 
@@ -28,16 +31,31 @@ export class QuestCreatorComponent implements AfterViewInit {
   }
   AddMarker()
   {
-    this.map.AddMarkerAtCenter(true, this.onPointClicked);
+    this.map.AddMarkerAtCenter(true,  (point) => this.onPointClicked(point));
     const point =this.map.markers[this.map.markers.length-1];
     point.pointId=this.iterator;
-
+    point.description="Description of point goes here";
+    point.title="New point";
     this.iterator++;
+    
 
   }
 
-  private onPointClicked(point: BasePointModel) {
-    console.log(point);
+  private onPointClicked(point: QuestPointModel) {
+    this.lastPoint=point.pointId;
+    
+    const dialogRef = this.dialog.open(PointEditorComponent, {
+      width: '400px',
+      data: {title: point.title, description:point.description}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+ 
+      this.map.markers[this.lastPoint].title=result.title;
+      this.map.markers[this.lastPoint].description=result.description;
+      
+    });
     
   }
 

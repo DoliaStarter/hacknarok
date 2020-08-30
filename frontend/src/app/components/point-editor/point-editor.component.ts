@@ -19,7 +19,8 @@ export class PointEditorComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.data);
+    
   }
 
   ngOnInit(): void {
