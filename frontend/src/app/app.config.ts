@@ -43,7 +43,7 @@ export enum PointStatus {
 }
 
 
-// endpoint POST api/quests/{id}/answers
+// endpoint POST api/quests/{id}/answers <- changed to api/quests/answers/{pointId}
 // when user in point and want to submit answer
 // we send BasePointModel -> answer:
 // SUCCESS -> new QuestModel
