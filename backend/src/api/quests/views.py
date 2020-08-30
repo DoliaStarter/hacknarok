@@ -22,10 +22,10 @@ def isOnPoint(request):
         for point in QuestPoint.objects.all():
             
             base_coord = (point.longitude, point.latitude)
-            d_lambda = user_coord[0]-base_coord[0]
-            d_fi = user_coord[1]-base_coord[1]
+            d_lambda = float(user_coord[0])-float(base_coord[0])
+            d_fi = float(user_coord[1])-float(base_coord[1])
 
-            if(EARTH_RADIUS*math.sqrt(math.sin(d_fi)**2 + math.sin(d_fi)**2) < DISTANCE_CONST):
+            if(EARTH_RADIUS*math.sqrt(math.sin(d_fi)**2 + math.sin(d_lambda)**2) < DISTANCE_CONST):
                 return JsonResponse({"isSuccess" : True})
 
         return JsonResponse({"isSuccess" : False})
@@ -39,9 +39,9 @@ def isInRadius(request):
         for point in QuestPoint.objects.all():
             
             base_coord = (point.longitude, point.latitude)
-            d_lambda = math.abs(user_coord[0]-base_coord[0])
-            d_fi = math.abs(user_coord[1]-base_coord[1])
-            if(EARTH_RADIUS*math.sqrt(math.sin(d_fi)**2 - math.sin(d_fi)**2) < radius):
+            d_lambda = float(user_coord[0])-float(base_coord[0])
+            d_fi = float(user_coord[1])-float(base_coord[1])
+            if(EARTH_RADIUS*math.sqrt(math.sin(d_fi)**2 + math.sin(d_lambda)**2) < radius):
                 return JsonResponse({"isSuccess" : True})
 
         return JsonResponse({"isSuccess" : False})
@@ -61,6 +61,9 @@ def getPoint(request, id):
     point = QuestPoint.objects.get(id=id)
     return JsonResponse({
         'title':point.title,
+        'description':point.description,
+        'long': float(point.longitude),
+        'lat' : float(point.latitude),
         'quest':questFromJSON(point.quest)
         })
 
@@ -80,7 +83,7 @@ def quest_search(request):
 
             'itemCount': item_count})
 
-
+@csrf_exempt
 def _get_user_and_quest_POST(request):
     json_data = json.loads(request.body)
     user = json_data["user"]
