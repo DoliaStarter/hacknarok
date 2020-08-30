@@ -1,10 +1,11 @@
 import { Component, OnInit,ViewChild, AfterViewInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import { BasePointModel, mapApiToken, QuestPointModel } from "../../app.config";
+import { BasePointModel, mapApiToken, QuestPointModel, QuestModel } from "../../app.config";
 import { MapComponent } from '../map/map.component';
 import { PointEditorComponent,DialogData } from '../point-editor/point-editor.component';
 import { MatDialog } from '@angular/material/dialog';
 import { title } from 'process';
+import { QuestEditorService } from '../../services/quest-editor.service';
 
 @Component({
   selector: 'app-quest-creator',
@@ -13,16 +14,17 @@ import { title } from 'process';
 })
 export class QuestCreatorComponent implements AfterViewInit {
 
-  constructor(public dialog: MatDialog) { }
-
-  title:string;
-  description:string;
-  
+  constructor(public dialog: MatDialog, private editorService: QuestEditorService) { }
 
   lastPoint:number;
-  points: Array<QuestPointModel>=[];
 
-  tree =[];
+  quest: QuestModel = {
+    'title': 'New quest',
+    creator: 'Author',
+    gamesCount:0,
+    points:[]
+  };
+
    
   iterator:number=0;
   @ViewChild(MapComponent, {static: true}) map: MapComponent;
@@ -36,88 +38,49 @@ export class QuestCreatorComponent implements AfterViewInit {
   AddMarker()
   {
     this.map.AddMarkerAtCenter(true,  (point) => this.onPointClicked(point));
-    const point =this.map.markers[this.map.markers.length-1];
-    point.pointId=this.iterator;
+    this.map.markers[this.map.markers.length-1].pointId=this.iterator;
+    this.iterator++;
+    const point=  this.map.toQuestPoint(this.map.markers[this.map.markers.length-1]);
     point.description="Description of point goes here";
     point.title="New point";
-    this.iterator++;
-    var tmp= new Array<{id:number, canBeVisited:boolean}>();
+ 
+    this.quest.points.push(point);
+    point.canOpenPoints=[];
+    this.quest.points[this.quest.points.length-1].canOpenPoints=[];
 
 
-    this.map.markers.forEach(element => {
-        tmp.push(
-          {
-            id:element.pointId,
-            canBeVisited:false
-          }
-        )
-    });
-    
-
-    this.tree.forEach(element => {
-          element.push(
-            {
-              id:point.pointId,
-              canBeVisited:false
-            }
-          )
-     
-    });
-    this.tree[point.pointId]=tmp;
-    
    
 
   }
    Save()
    {
-       console.log(this.tree);
+      
+       this.editorService.CreateQuest(this.quest).subscribe();
+
    }
   private onPointClicked(point: QuestPointModel) {
     this.lastPoint=point.pointId;
-    let possible= new Array<{title:string, id:number, canBeVisited:boolean}>()
-
-
-    console.log(this.tree);
-    this.tree[point.pointId].forEach(element => {
-         possible.push(
-            {
-              title:this.map.markers[element.id].title,
-              id:element.id,
-              canBeVisited:element.canBeVisited
-            }
-         );
-     });
-     console.log(possible);
+    
+    var data= {} as DialogData;
+    data.point=this.quest.points.find(val=>{return val.pointId==point.pointId});
+    data.quest=this.quest;
      
+
     const dialogRef = this.dialog.open(PointEditorComponent, {
-      width: '800px',
-      height: '600px',
-      data: {title: point.title, description:point.description,
-      possible: possible }
+      width: '400px',
+      height: '300px',
+      data:  data
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result:DialogData) => {
       if (!result) return;
+      console.log(result);
+
+      this.quest.points[this.lastPoint].title=result.point.title;
+      this.quest.points[this.lastPoint].description=result.point.description;
+      this.quest.points[this.lastPoint].canOpenPoints=result.point.canOpenPoints;
      
-      this.map.markers[this.lastPoint].title=result.title;
-      this.map.markers[this.lastPoint].description=result.description;
 
-      console.log(result.possible);
-      var tmp= new Array<{id:number, canBeVisited:boolean}>();
-
-
-     result.possible.forEach(element => {
-        tmp.push(
-          {
-            id:element.id,
-            canBeVisited: element.canBeVisited
-          }
-        )
-    });
-      this.tree[point.pointId] = tmp;
-      console.log(this.tree);
-   
-      
     });
     
   }

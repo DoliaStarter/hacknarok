@@ -131,7 +131,7 @@ export class MapComponent implements OnInit {
     this.markers.push(marker);
   }
 
-  private toQuestPoint(marker:QuestMarkerModel):QuestPointModel
+  public toQuestPoint(marker:QuestMarkerModel):QuestPointModel
   {
     return {
         pointId:marker.pointId,
