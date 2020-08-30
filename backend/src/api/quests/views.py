@@ -13,12 +13,8 @@ def index(request):
     return render(request, '', context)
 
 
-# def get_quest_list_model(request):
-#
-#     })
-
 @csrf_exempt
-def answer(request):
+def isOnPoint(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
         user_coord = (json_data["long"], json_data["lat"])
@@ -34,7 +30,7 @@ def answer(request):
         return JsonResponse({"isSuccess" : False})
 
 @csrf_exempt
-def searchInRadius(request):
+def isInRadius(request):
     if request.method == 'POST':
         json_data = json.loads(request.body)
         print(json_data)
@@ -50,11 +46,20 @@ def searchInRadius(request):
 
         return JsonResponse({"isSuccess" : False})
 
+def questFromJSON(quest):
+    return{
+        'id': quest.id,
+        'title': quest.title,
+        'description': quest.description
+    }
 
 @csrf_exempt
 def getPoint(request, id):
     point = QuestPoint.objects.get(id=id)
-    return JsonResponse({'point':point.title})
+    return JsonResponse({
+        'title':point.title,
+        'quest':questFromJSON(point.quest)
+        })
 
 
 @csrf_exempt
@@ -67,11 +72,7 @@ def quest_search(request):
         return JsonResponse({
 
             'quests': [{
-
-                'id': quest.id,
-                'title': quest.title,
-                'description': quest.description,
-                
+                questFromJSON(quest)
             } for quest in quests],
 
             'itemCount': item_count})
@@ -163,16 +164,17 @@ def quest(request):
     if request.method == 'POST':
         title, creator_id, description, points = _getQuestFromPOST(request)
         creator = User.objects.filter(id=creator_id)[0]
-        Quest(title=title, creator=creator, description=description).save()
-        if points:
-            for point in points:
-                QuestPoint(status=point['status'], \
-                            title=point['title'], \
-                            description=point['description'], \
-                            latitude=point['latitude'], \
-                            longitude=point['longitude'], \
-                            quest=point['quest'],\
-                            parentPoint=point['parentPoint']).save() 
+        thisQuest = Quest(title=title, creator=creator, description=description)
+        thisQuest.save()
+        for point in points:
+            quest = QuestPoint(status=point['status'], \
+                        title=point['title'], \
+                        description=point['description'], \
+                        latitude=point['latitude'], \
+                        longitude=point['longitude'], \
+                        quest=thisQuest,\
+                        parentPoint=point['parentPoint'])
+            quest.save()
         return HttpResponse('Successfully created')
     else:
         quest_list_model = list(Quest.objects.order_by('title'))
@@ -180,12 +182,3 @@ def quest(request):
         return JsonResponse({
             'quests': quest_list_model,
             'itemCount': item_count})
-
-# def get_base_point_model(request):
-#     bp_id = request.GET['id']
-#     base_point_to_return = QuestPoint.objects.filter(id=bp_id)
-#
-#     return JsonResponse({
-#
-#
-#     })
