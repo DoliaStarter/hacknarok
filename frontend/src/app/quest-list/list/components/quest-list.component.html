@@ -1,4 +1,34 @@
 <div>
+    <div class="filters">
+        <h1>Filters</h1>
+        <div class="filter-row">
+            <p>
+                <mat-form-field appearance="outline">
+                  <mat-label>Quest title</mat-label>
+                  <input matInput placeholder="Quest title" [(ngModel)]="filters.title" (ngModelChange)="refresh(filters)">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </p>
+            <p class='check'>
+
+            <mat-checkbox
+                (change)="setPositionFilter($event.checked)"
+                [color]="'primary'"
+                >
+                Find quests near me
+            </mat-checkbox>
+            </p>
+            
+            <p *ngIf="isPositionFilterActive">
+                <mat-form-field appearance="outline">
+                  <mat-label>Range in m</mat-label>
+                  <input matInput placeholder="Quest title" [(ngModel)]="filters.range" (ngModelChange)="refresh(filters)">
+                  <mat-icon matSuffix>explore</mat-icon>
+                </mat-form-field>
+            </p>
+            
+        </div>
+    </div>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="title">
             <th class="header" mat-header-cell *matHeaderCellDef> Title </th>
