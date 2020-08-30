@@ -1,28 +1,63 @@
-.creator-form
-{
+.creator-form {
     display: flex;
     flex-direction: column;
-
-}
-.description
-{
-   width: 500px;
+   
+    background: #26272b;
+  }
   
-}
-.title
-{
-   width: 250px;
-}
-.mapboxgl-canvas
-{
-   width: 200px;
-   height: 200px;
-}
-textarea.mat-input-element {
+  .description {
+    width: 500px;
+  
+     margin: 30px;
+  
+  }
+  
+  .title {
+    width: 250px;
+    margin: 30px;
+  
+  }
+  
+  .mapboxgl-canvas {
+    width: 200px;
     height: 200px;
-}
-.main
-{
+  }
+  
+  textarea.mat-input-element {
+    height: 200px;
+  }
+  
+  .main {
     display: flex;
-}
-
+    flex-direction: row;
+  }
+  .map-container
+  {
+      margin-left: 40px;
+  }
+  
+  
+  
+  
+  #cr_form {
+    width: 40%;
+    height: 100%;
+  
+  }
+  
+  .creator-form {
+    height: 77%;
+    width: 35%;
+    position: absolute;
+      -moz-border-radius: 30px;
+    border-radius: 30px;
+    border: 3px solid #673ab6;
+    overflow: hidden;
+    background-color: whitesmoke;
+  
+  
+  }
+  #saveq {
+    margin: 30px;
+    width: 100%;
+  }
