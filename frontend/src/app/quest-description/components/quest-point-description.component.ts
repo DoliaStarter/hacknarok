@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { QuestPointModel } from '../../app.config';
 import { MapComponent } from '../../components/map/map.component';
 import { QuestAnswerService } from '../services/quest-answer.service';
@@ -20,7 +21,8 @@ export class QuestPointDescriptionComponent implements AfterViewInit {
     
     constructor(
       protected dialog: MatDialog,
-      protected answerService: QuestAnswerService) { }
+      protected answerService: QuestAnswerService,
+      protected snackbar: MatSnackBar ) { }
 
     
     ngAfterViewInit() {
@@ -35,13 +37,18 @@ export class QuestPointDescriptionComponent implements AfterViewInit {
           data: point
         });
         dialogRef.afterClosed().subscribe(result => {
+
           if (result) {
             this.answerService.getQuestPoints(this.questId).subscribe(
               (points) => {
                 this.points = points;
                 this.refreshMarkers();
+                this.snackbar.open('Congrats! You points were successfully updated', 'Hoora', {duration: 4000})
               }
             )
+          } else {
+            this.snackbar.open('Sorry, but you are still not in this point', ':(', {duration: 4000})
+
           }
         });
     }
