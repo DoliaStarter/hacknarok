@@ -1,13 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { QuestModel } from '../../app.config';
+import { QuestModel, startQuestUrl } from '../../app.config';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuestDescriptionService {
   constructor(public httpClient: HttpClient) {}
+
+  startSession(questid:number)
+  {
+    console.log(startQuestUrl.toString()+questid+"/start");
+      return this.httpClient.post<boolean>(startQuestUrl.toString()+questid+"/start",questid).pipe(
+          tap(isSuccess => {
+             alert('quest started');
+          
+          }));
+  }
 
     public getQuest(id: number): Observable<QuestModel> {
         return of({

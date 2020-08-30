@@ -3,4 +3,5 @@
   <p id="description">{{quest.description}}</p>
   <p id="creator">Created by {{quest.creator}} <br/>
     Played {{quest.gamesCount}} times</p>
+    <button class="play-button" mat-raised-button color="primary" style="height: 40px; width: 120px;" (click)="this.questservice.startSession(quest.id).subscribe()" > Play a quest </button>
 </div>
