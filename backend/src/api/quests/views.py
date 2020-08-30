@@ -58,6 +58,7 @@ def getPoint(request, id):
     point = QuestPoint.objects.get(id=id)
     return JsonResponse({
         'title':point.title,
+        'description':point.description,
         'long': float(point.longitude),
         'lat' : float(point.latitude),
         'quest':questFromJSON(point.quest)
