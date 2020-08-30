@@ -1,10 +1,31 @@
-<form>
-<div mat-dialog-content>
-    <div class="login-container">
-      <mat-form-field class="example-form-field">
-        <mat-label>Login</mat-label>
-        <input matInput type="text" [(ngModel)]="title" placeholder="title" >
+<form class="flex-class">
+<div mat-dialog-content >
+    <div>
+      <mat-form-field >
+        <mat-label>Title</mat-label>
+        <input matInput type="text" [(ngModel)]="data.point.title" placeholder="title" name="title" >
       </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label class="description">Description</mat-label>
+        <textarea matInput type="text" [(ngModel)]="data.point.description" placeholder="description" name="description">
+            </textarea>
+      </mat-form-field>
+      <br>
+      
+      <button mat-raised-button color="primary" style="height: 40px; width: 120px;" (click)="onNoClick()" >Save</button>
+     <br>
+     <br>
+        <span *ngFor="let p of checkList">
+          
+          <mat-checkbox [(ngModel)]="p.canTravel" [color]="'primary'" name="visited">
+                 {{p.title}}
+          </mat-checkbox>
+          <br>
+          
+        </span>
+      
+
     </div>
 </div>
 </form>

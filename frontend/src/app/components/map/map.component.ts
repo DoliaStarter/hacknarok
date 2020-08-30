@@ -87,8 +87,8 @@ export class MapComponent implements OnInit {
     });
   }
 
-  public GetPoints(): Array<BasePointModel> {
-    const result = new Array<BasePointModel>();
+  public GetPoints(): Array<QuestPointModel> {
+    const result = new Array<QuestPointModel>();
     this.markers.forEach((marker, index) => {
       result.push(
         {
@@ -131,7 +131,7 @@ export class MapComponent implements OnInit {
     this.markers.push(marker);
   }
 
-  private toQuestPoint(marker:QuestMarkerModel):QuestPointModel
+  public toQuestPoint(marker:QuestMarkerModel):QuestPointModel
   {
     return {
         pointId:marker.pointId,
