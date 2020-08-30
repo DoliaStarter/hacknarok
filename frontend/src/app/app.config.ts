@@ -7,6 +7,7 @@ export const questListServiceUrl = `${host}/api/quests`;
 
 // router 
 export const questDetailsRoute = 'quest-details';
+export const createQuestRoute = 'create-quest';
 
 // models
 // list
