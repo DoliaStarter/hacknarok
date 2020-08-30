@@ -1,9 +1,11 @@
 import {Component, Inject,OnInit} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { QuestPointModel } from '../../app.config';
 
 export interface DialogData {
   description:string;
   title:string;
+  possible:Array<{title:string, id:number, canBeVisited:boolean}>
 
 }
 

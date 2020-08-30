@@ -11,6 +11,16 @@
             </textarea>
       </mat-form-field>
       <button (click)="onNoClick()" >Save</button>
+     
+        <span *ngFor="let point of data.possible">
+          <br>
+          <mat-checkbox [(ngModel)]="point.canBeVisited" [color]="'primary'" name="visited">
+                 {{point.title}}
+          </mat-checkbox>
+          
+        </span>
+      
+
     </div>
 </div>
 </form>

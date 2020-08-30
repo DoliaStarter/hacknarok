@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { QuestCreatorComponent } from './quest-creator/quest-creator.component';
 import { PointEditorComponent } from './point-editor/point-editor.component';
-
+import {MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
   imports: [
     MatInputModule,
@@ -25,7 +25,8 @@ import { PointEditorComponent } from './point-editor/point-editor.component';
     MatIconModule,
     CommonModule,
     BrowserModule,
-    FormsModule
+    FormsModule,
+    MatCheckboxModule
   ],
   declarations: [MapComponent, LoginComponent, HeaderComponent, QuestCreatorComponent, PointEditorComponent],
   exports: [MapComponent, LoginComponent, HeaderComponent, QuestCreatorComponent,PointEditorComponent]

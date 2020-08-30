@@ -10,9 +10,10 @@
     <mat-label>Description</mat-label>
     <textarea  matInput type="text" [(ngModel)]="description" value="Your quest description goes here" name="description"> </textarea>
 </mat-form-field>
-
+<button (click)="Save()" > Save quest </button>
 </form>
 <div class="map-container">
     <app-map></app-map>
 </div>
+
 </div>
