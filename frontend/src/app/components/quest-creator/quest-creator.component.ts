@@ -31,8 +31,6 @@ export class QuestCreatorComponent implements AfterViewInit {
     this.map.AddMarkerAtCenter(true, this.onPointClicked);
     const point =this.map.markers[this.map.markers.length-1];
     point.pointId=this.iterator;
-    point.description="Description of point goes here";
-    point.title="New point";
 
     this.iterator++;
 

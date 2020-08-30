@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject,OnInit} from '@angular/core';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
+export interface DialogData {
+  description:string;
+  title:string;
+
+}
 
 @Component({
   selector: 'app-point-editor',
@@ -7,10 +14,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PointEditorComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public dialogRef: MatDialogRef<PointEditorComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
-  description:string;
-  title:string;
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
   ngOnInit(): void {
   }
