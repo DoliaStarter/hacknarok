@@ -3,11 +3,11 @@
         <button (click)="onGoBackClick()" mat-icon-button class="example-icon" >
             <mat-icon>arrow_back</mat-icon>    
         </button>
-        <button (click)="onViewActiveClick()" mat-button class="example-icon" >
+        <button *ngIf="showQuests" (click)="onViewActiveClick()"  mat-button class="example-icon" >
             <mat-icon>visibility</mat-icon>    
             {{ viewActiveQuestsLabel }}
         </button>
-        <button (click)="onCreateClick()" mat-button class="example-icon" >
+        <button *ngIf="showCreate" (click)="onCreateClick()" mat-button class="example-icon" >
             <mat-icon>add</mat-icon>    
             Create quest
         </button>

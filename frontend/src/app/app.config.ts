@@ -5,7 +5,7 @@ export const registerUrl = `${host}/api/users/register`;
 export const createQuestUrl=  `${host}/api/quests`;
 export const mapApiToken = 'pk.eyJ1IjoiZHVzaGVzcyIsImEiOiJja2VmcWpneHcwc201MnluNzl3ZDRjNDl1In0.sV8IejZBXjXoUbHgRGeN6w';
 export const questListServiceUrl = `${host}/api/quests`;
-
+export const startQuestUrl =  `${host}/api/quests/`;
 // router 
 export const questDetailsRoute = 'quest-details';
 export const createQuestRoute = 'create-quest';
