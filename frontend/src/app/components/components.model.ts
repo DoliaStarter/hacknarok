@@ -9,9 +9,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { MapComponent } from './map/map.component';
-
+import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
+import { QuestCreatorComponent } from './quest-creator/quest-creator.component';
+import { PointEditorComponent } from './point-editor/point-editor.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
-  imports: [   
+  imports: [
     MatInputModule,
     FormsModule,
     MatDividerModule,
@@ -19,8 +23,12 @@ import { MapComponent } from './map/map.component';
     MatDialogModule,
     MatToolbarModule,
     MatIconModule,
-],
-  declarations: [MapComponent, LoginComponent, HeaderComponent],
-  exports: [MapComponent, LoginComponent, HeaderComponent]
+    CommonModule,
+    BrowserModule,
+    FormsModule,
+    MatCheckboxModule
+  ],
+  declarations: [MapComponent, LoginComponent, HeaderComponent, QuestCreatorComponent, PointEditorComponent],
+  exports: [MapComponent, LoginComponent, HeaderComponent, QuestCreatorComponent,PointEditorComponent]
 })
-export class ComponentsModule {}
+export class ComponentsModule { }

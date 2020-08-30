@@ -7,6 +7,7 @@ import { QuestDescriptionModule } from './quest-description/quest-description.mo
 import { QuestDescriptionResolver } from './quest-description/services/quest-description.resolver';
 import { QuestListRouteComponent } from './quest-list/quest-list-route.component';
 import { QuestListModule } from './quest-list/quest-list.module';
+import { QuestCreatorComponent } from './components/quest-creator/quest-creator.component';
 const routes: Routes = [
   {
     path: 'quest-list',
@@ -24,6 +25,12 @@ const routes: Routes = [
     redirectTo: 'quest-list',
     pathMatch: 'full'
   },
+  {
+    path: 'create-quest',
+   component: QuestCreatorComponent
+  
+  },
+  
 
 ];
 

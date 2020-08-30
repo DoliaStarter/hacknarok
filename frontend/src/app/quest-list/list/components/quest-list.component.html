@@ -1,27 +1,57 @@
 <div>
+    <div class="filters">
+        <h1>Filters</h1>
+        <div class="filter-row">
+            <p>
+                <mat-form-field appearance="outline">
+                  <mat-label>Quest title</mat-label>
+                  <input matInput placeholder="Quest title" [(ngModel)]="filters.title" (ngModelChange)="refresh(filters)">
+                  <mat-icon matSuffix>search</mat-icon>
+                </mat-form-field>
+            </p>
+            <p class='check'>
+
+            <mat-checkbox
+                (change)="setPositionFilter($event.checked)"
+                [color]="'primary'"
+                >
+                Find quests near me
+            </mat-checkbox>
+            </p>
+            
+            <p *ngIf="isPositionFilterActive">
+                <mat-form-field appearance="outline">
+                  <mat-label>Range in m</mat-label>
+                  <input matInput placeholder="Quest title" [(ngModel)]="filters.range" (ngModelChange)="refresh(filters)">
+                  <mat-icon matSuffix>explore</mat-icon>
+                </mat-form-field>
+            </p>
+            
+        </div>
+    </div>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="title">
-            <th mat-header-cell *matHeaderCellDef> Title </th>
-            <td mat-cell *matCellDef="let quest"> {{quest.title}} </td>
+            <th class="header" mat-header-cell *matHeaderCellDef> Title </th>
+            <td class="table-part"  mat-cell *matCellDef="let quest"> {{quest.title}} </td>
         </ng-container>
         
         <ng-container matColumnDef="creator">
-            <th mat-header-cell *matHeaderCellDef> Creator </th>
-            <td mat-cell *matCellDef="let quest"> {{quest.creator}} </td>
+            <th class="header" mat-header-cell *matHeaderCellDef> Creator </th>
+            <td mat-cell class="table-part" *matCellDef="let quest"> {{quest.creator}} </td>
         </ng-container>
         
         <ng-container matColumnDef="gamesCount">
-            <th mat-header-cell *matHeaderCellDef> Games count </th>
-            <td mat-cell *matCellDef="let quest"> {{quest.gamesCount}} </td>
+            <th class="header" mat-header-cell *matHeaderCellDef> Games count </th>
+            <td class="table-part"  mat-cell *matCellDef="let quest"> {{quest.gamesCount}} </td>
         </ng-container>
         
         
-        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr class="table-part" mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <tr class="item" mat-row
         (click)="onItemClicked(quest)"
          *matRowDef="let quest; columns: columnsToDisplay"></tr>    
     </table>
-    <mat-paginator [length]="itemCount" [pageSizeOptions]="pageSizes">
+    <mat-paginator id='paginator' class="table-part" [length]="itemCount" [pageSizeOptions]="pageSizes">
     </mat-paginator>
 </div>
 

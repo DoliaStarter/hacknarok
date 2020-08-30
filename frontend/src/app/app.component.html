@@ -1,5 +1,7 @@
 <app-header></app-header>
+<mat-progress-bar *ngIf="waiting" mode="indeterminate"></mat-progress-bar>
 
-<div class="content">
+<div [hidden]="waiting" class="content">
     <router-outlet></router-outlet>
 </div>
+        

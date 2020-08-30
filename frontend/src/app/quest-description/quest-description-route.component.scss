@@ -1,9 +1,26 @@
 .description {
-    display: flex;
-    flex-direction: row;
-    
-    * {
-        order: 1;
-        width: 50%;
-    }
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  border-radius: 30px;
+
+
+  margin: 5px;
+  text-align: center;
+
+  * {
+    order: 1;
+    width: 40%;
+  }
 }
+
+#plate1{
+  width: 40%;
+  height: 10%;
+}
+
+#plate2{
+  height: 90%;
+  width: 40%;
+}
+

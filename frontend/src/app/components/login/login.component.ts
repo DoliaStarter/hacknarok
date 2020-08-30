@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { AuthorizationService } from '../../services/authorization.service';
@@ -18,10 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<LoginComponent>) {
 
   }
-
-
-
-  @Input() type: string = "Login"; //register or login
+  
+  isLogin: boolean;
   login: string;
   password: string;
   ngOnInit(): void {
@@ -29,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   OnLoginClicked() {
 
-    if (this.type.toLowerCase() == "login") {
+    if (this.isLogin) {
       this.logSubscription = this.authService.Login(this.login, this.password).subscribe();
     } else {
       this.regSubscription = this.authService.Register(this.login, this.password).subscribe();
@@ -42,7 +40,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.logSubscription && this.logSubscription.unsubscribe();
   }
 
-  
+
   onNoClick(): void {
     this.dialogRef.close();
   }
